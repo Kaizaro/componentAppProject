@@ -44,6 +44,13 @@ export default class ScanQRCodeScreen extends Component {
         console.log(code);
         const codeState = await getCodeState(code);
         console.log(codeState);
+        if (codeState && codeState.status && codeState.status === 200) {
+            console.log('success check');
+            if (codeState.data) {
+                console.log('data !== false');
+                this.props.navigation.navigate('RequestCreate');
+            }
+        }
     };
 
     isButtonDisabled = () => {

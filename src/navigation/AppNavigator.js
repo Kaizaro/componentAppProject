@@ -52,7 +52,7 @@ const AppStack = createStackNavigator(
                 headerRight: () => <LogoutButton navigation={navigation} />,
             }),
         },
-        RequestsDetails: {
+        RequestCreate: {
             screen: RequestCreate,
             navigationOptions: ({navigation}) => ({
                 headerTitleContainerStyle: {
