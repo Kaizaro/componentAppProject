@@ -3,7 +3,7 @@ import {Dimensions, Image, StyleSheet, Text, View} from 'react-native';
 
 import Icon from 'react-native-vector-icons/FontAwesome';
 
-import logo from '../../assets/images/appLogoFull.jpg';
+import logo from '../../assets/images/appLogoFull.png';
 import {APP_COLORS} from '../Styles';
 import {NavigationActions, StackActions} from 'react-navigation';
 import {connect} from 'react-redux';
@@ -52,7 +52,7 @@ class WelcomeScreen extends Component {
                     <Icon
                         style={{marginTop: 14}}
                         size={20}
-                        color={APP_COLORS.LIGHT_GREEN}
+                        color={APP_COLORS.PRIMARY_GREEN}
                         name={'cog'}
                     />
                 </View>

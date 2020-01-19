@@ -5,10 +5,20 @@ import {bindActionCreators} from 'redux';
 import {clearToken} from '../store/actions/authActions';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import {APP_COLORS} from '../Styles';
+import {NavigationActions, StackActions} from 'react-navigation';
 
 class LogoutButton extends PureComponent {
     onLogoutButtonPress = () => {
         this.props.authActions.clearToken();
+        const resetAction = StackActions.reset({
+            index: 0,
+            actions: [
+                NavigationActions.navigate({
+                    routeName: 'AuthStack',
+                }),
+            ],
+        });
+        this.props.navigation.dispatch(resetAction);
     };
 
     render() {

@@ -2,7 +2,7 @@ import React from 'react';
 import {StyleSheet, View, TextInput, Image} from 'react-native';
 import {StackActions, NavigationActions} from 'react-navigation';
 import Button from '../../components/Button';
-import logo from '../../../assets/images/appLogoFull.jpg';
+import logo from '../../../assets/images/appLogoFull.png';
 import {scaleHorizontal, scaleVertical} from '../../lib/util';
 import {APP_COLORS} from '../../Styles';
 import TransparentButton from '../../components/TransparentButton';
