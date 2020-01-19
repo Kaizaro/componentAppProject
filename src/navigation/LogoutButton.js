@@ -27,7 +27,11 @@ class LogoutButton extends PureComponent {
                 activeOpacity={0.75}
                 style={styles.container}
                 onPress={this.onLogoutButtonPress}>
-                <Icon size={30} color={APP_COLORS.GRAY} name={'sign-out'} />
+                <Icon
+                    size={30}
+                    color={APP_COLORS.DARK_GREY}
+                    name={'sign-out'}
+                />
             </TouchableOpacity>
         );
     }

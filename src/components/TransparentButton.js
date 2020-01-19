@@ -1,7 +1,7 @@
 import React, {PureComponent} from 'react';
 import {StyleSheet, Text, TouchableOpacity} from 'react-native';
 import {scaleHorizontal} from '../lib/util';
-import {APP_COLORS} from '../Styles';
+import {APP_COLORS, APP_FONTS} from '../Styles';
 
 export default class TransparentButton extends PureComponent {
     getStyle = defaultStyle => {
@@ -37,8 +37,9 @@ const styles = StyleSheet.create({
         alignItems: 'center',
     },
     text: {
+        fontFamily: APP_FONTS.CERA_ROUND_PRO_BOLD,
         fontSize: scaleHorizontal(18),
-        color: APP_COLORS.GREEN_BLUE,
+        color: APP_COLORS.PRIMARY_GREEN,
         textDecorationLine: 'underline',
     }
 });

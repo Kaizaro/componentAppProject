@@ -31,7 +31,7 @@ const styles = StyleSheet.create({
         width: 30,
         height: 30,
         borderRadius: 30,
-        backgroundColor: APP_COLORS.LIGHT_GREEN,
+        backgroundColor: APP_COLORS.PRIMARY_GREEN,
         justifyContent: 'center',
         paddingHorizontal: 8,
     },

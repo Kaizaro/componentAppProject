@@ -1,7 +1,7 @@
 import React from 'react';
 import {StyleSheet, TouchableOpacity, Text} from 'react-native';
 import {scaleHorizontal, scaleVertical} from '../lib/util';
-import {APP_COLORS} from '../Styles';
+import {APP_COLORS, APP_FONTS} from '../Styles';
 
 class Button extends React.PureComponent {
     getStyle = defaultStyle => {
@@ -41,14 +41,15 @@ const styles = StyleSheet.create({
     container: {
         width: scaleHorizontal(225),
         height: scaleVertical(40),
-        backgroundColor: APP_COLORS.LIGHT_GREEN,
+        backgroundColor: APP_COLORS.PRIMARY_GREEN,
         justifyContent: 'center',
         alignItems: 'center',
         borderRadius: 60,
     },
     text: {
+        fontFamily: APP_FONTS.CERA_ROUND_PRO_BOLD,
+        fontSize: scaleHorizontal(24),
         color: 'white',
-        fontSize: 24,
     },
 });
 

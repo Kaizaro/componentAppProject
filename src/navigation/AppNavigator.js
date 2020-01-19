@@ -49,20 +49,42 @@ const AppStack = createStackNavigator(
                 },
                 headerTitle: () => <ScreenTitle title={'Свалка ТЦ Филион'} />,
                 headerLeft: () => <BackButton navigation={navigation} />,
-                headerRight: () => <LogoutButton />,
+                headerRight: () => <LogoutButton navigation={navigation} />,
             }),
         },
         RequestsDetails: {
             screen: RequestCreate,
-            navigationOptions: {
-                headerTitle: 'Просмотр заявки',
-            },
+            navigationOptions: ({navigation}) => ({
+                headerTitleContainerStyle: {
+                    width: '73%',
+                },
+                headerLeftContainerStyle: {
+                    width: '20%',
+                },
+                headerRightContainerStyle: {
+                    width: '20%',
+                },
+                headerTitle: () => <ScreenTitle title={'Просмотр заявки'} />,
+                headerLeft: () => <BackButton navigation={navigation} />,
+                headerRight: () => <LogoutButton navigation={navigation} />,
+            }),
         },
         ScanQRCodeScanner: {
             screen: ScanQRCodeScreen,
-            navigationOptions: {
-                headerTitle: 'Сканирование заявки',
-            },
+            navigationOptions: ({navigation}) => ({
+                headerTitleContainerStyle: {
+                    width: '73%',
+                },
+                headerLeftContainerStyle: {
+                    width: '20%',
+                },
+                headerRightContainerStyle: {
+                    width: '20%',
+                },
+                headerTitle: () => <ScreenTitle title={'Сканирование заявки'} />,
+                headerLeft: () => <BackButton navigation={navigation} />,
+                headerRight: () => <LogoutButton navigation={navigation} />,
+            }),
         },
     },
     {

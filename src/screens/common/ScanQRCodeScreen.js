@@ -3,7 +3,7 @@ import QRCodeScanner from 'react-native-qrcode-scanner';
 import {StyleSheet, Text, TextInput, View} from 'react-native';
 import {width} from '../WelcomeScreen';
 import {scaleHorizontal, scaleVertical} from '../../lib/util';
-import {APP_COLORS} from '../../Styles';
+import {APP_COLORS, APP_FONTS} from '../../Styles';
 import TransparentButton from '../../components/TransparentButton';
 import Button from '../../components/Button';
 
@@ -129,8 +129,9 @@ const styles = StyleSheet.create({
         paddingTop: scaleVertical(30),
     },
     text: {
+        fontFamily: APP_FONTS.CERA_ROUND_PRO_BOLD,
         fontSize: scaleHorizontal(18),
-        color: APP_COLORS.GRAY,
+        color: APP_COLORS.DARK_GREY,
         textAlign: 'center',
     },
     inputFieldContainer: {
@@ -148,7 +149,9 @@ const styles = StyleSheet.create({
         backgroundColor: APP_COLORS.LIGHT_GRAY,
     },
     inputFieldText: {
+        fontFamily: APP_FONTS.CERA_ROUND_PRO_BOLD,
         fontSize: scaleHorizontal(16),
+        color: APP_COLORS.PRIMARY_BLACK,
         textAlign: 'center',
     },
     buttonContainer: {

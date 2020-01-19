@@ -4,7 +4,7 @@ import {StackActions, NavigationActions} from 'react-navigation';
 import Button from '../../components/Button';
 import logo from '../../../assets/images/appLogoFull.png';
 import {scaleHorizontal, scaleVertical} from '../../lib/util';
-import {APP_COLORS} from '../../Styles';
+import {APP_COLORS, APP_FONTS} from '../../Styles';
 import TransparentButton from '../../components/TransparentButton';
 import {authUser} from '../../api/Connect';
 import {bindActionCreators} from 'redux';
@@ -81,7 +81,7 @@ class LoginScreen extends React.Component {
                             defaultValue={username}
                             onChangeText={this.onUsernameChange}
                             placeholder={'E-mail или телефон'}
-                            placeholderTextColor={APP_COLORS.GRAY}
+                            placeholderTextColor={APP_COLORS.DARK_GREY}
                             returnKeyType={'done'}
                             style={styles.inputFieldText}
                         />
@@ -92,7 +92,7 @@ class LoginScreen extends React.Component {
                             defaultValue={password}
                             onChangeText={this.onPasswordChange}
                             placeholder={'Пароль'}
-                            placeholderTextColor={APP_COLORS.GRAY}
+                            placeholderTextColor={APP_COLORS.DARK_GREY}
                             returnKeyType={'done'}
                             style={styles.inputFieldText}
                             secureTextEntry={true}
@@ -142,6 +142,8 @@ const styles = StyleSheet.create({
     },
     inputFieldText: {
         fontSize: scaleHorizontal(16),
+        fontFamily: APP_FONTS.CERA_ROUND_PRO_BOLD,
+        color: APP_COLORS.PRIMARY_BLACK,
         textAlign: 'center',
     },
     buttonContainer: {
@@ -162,7 +164,7 @@ const styles = StyleSheet.create({
     },
     textButton: {
         fontSize: scaleHorizontal(18),
-        color: APP_COLORS.GREEN_BLUE,
+        color: APP_COLORS.PRIMARY_GREEN,
         textDecorationLine: 'underline',
     },
 });

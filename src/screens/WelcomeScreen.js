@@ -4,7 +4,7 @@ import {Dimensions, Image, StyleSheet, Text, View} from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 
 import logo from '../../assets/images/appLogoFull.png';
-import {APP_COLORS} from '../Styles';
+import {APP_COLORS, APP_FONTS} from '../Styles';
 import {NavigationActions, StackActions} from 'react-navigation';
 import {connect} from 'react-redux';
 
@@ -79,8 +79,9 @@ const styles = StyleSheet.create({
         alignItems: 'center',
     },
     text: {
+        fontFamily: APP_FONTS.CERA_ROUND_PRO_BOLD,
         fontSize: 18,
-        color: APP_COLORS.GRAY,
+        color: APP_COLORS.GREY,
         textAlign: 'center',
     },
 });
