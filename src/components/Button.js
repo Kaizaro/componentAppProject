@@ -47,6 +47,7 @@ const styles = StyleSheet.create({
         borderRadius: 60,
     },
     text: {
+        marginBottom: scaleVertical(5),
         fontFamily: APP_FONTS.CERA_ROUND_PRO_BOLD,
         fontSize: scaleHorizontal(24),
         color: 'white',
