@@ -61,10 +61,18 @@ export default class RequestCreate extends Component {
                                 title: 'Водитель, телефон',
                                 data: request.driver,
                             })}
-                            {this.renderRow({
-                                title: 'Тоннаж',
-                                data: Math.round(request.tonnage),
-                            })}
+                            {request.tonnage &&
+                                this.renderRow({
+                                    title: 'Тоннаж',
+                                    data: `${Math.round(request.tonnage)} тонн`,
+                                })}
+                            {request.volume &&
+                                this.renderRow({
+                                    title: 'Объем',
+                                    data: `${Math.round(
+                                        request.tonnage,
+                                    )} куб.см`,
+                                })}
                             {this.renderRow({
                                 title: 'Тип отходов',
                                 data: request.typeWaste,
