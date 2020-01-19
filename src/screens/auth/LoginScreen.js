@@ -105,12 +105,6 @@ class LoginScreen extends React.Component {
                         disabled={this.isButtonDisabled()}
                     />
                 </View>
-                <View style={styles.footerContainer}>
-                    <TransparentButton
-                        onPress={this.onRegistrationButtonPress}
-                        text={'Регистрация'}
-                    />
-                </View>
             </View>
         );
     };
@@ -148,24 +142,6 @@ const styles = StyleSheet.create({
     },
     buttonContainer: {
         marginTop: scaleVertical(20),
-    },
-    footerContainer: {
-        height: '15%',
-        width: '100%',
-        flexDirection: 'column',
-        justifyContent: 'center',
-        alignItems: 'center',
-    },
-    touchableContainer: {
-        width: '50%',
-        height: '100%',
-        justifyContent: 'center',
-        alignItems: 'center',
-    },
-    textButton: {
-        fontSize: scaleHorizontal(18),
-        color: APP_COLORS.PRIMARY_GREEN,
-        textDecorationLine: 'underline',
     },
 });
 

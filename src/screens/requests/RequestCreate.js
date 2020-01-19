@@ -15,7 +15,6 @@ export default class RequestCreate extends Component {
 
     onCancelButtonPress = () => {
         console.log('cancelButton pressed');
-        this.props.navigation.goBack();
     };
 
     onConfirmRequestButtonPress = () => {
@@ -61,17 +60,17 @@ export default class RequestCreate extends Component {
                                 title: 'Водитель, телефон',
                                 data: request.driver,
                             })}
-                            {request.tonnage &&
-                                this.renderRow({
-                                    title: 'Тоннаж',
-                                    data: `${Math.round(request.tonnage)} тонн`,
-                                })}
                             {request.volume &&
                                 this.renderRow({
                                     title: 'Объем',
                                     data: `${Math.round(
                                         request.tonnage,
                                     )} куб.см`,
+                                })}
+                            {request.tonnage &&
+                                this.renderRow({
+                                    title: 'Тоннаж',
+                                    data: `${Math.round(request.tonnage)} тонн`,
                                 })}
                             {this.renderRow({
                                 title: 'Тип отходов',
@@ -83,7 +82,7 @@ export default class RequestCreate extends Component {
                 <View style={styles.footerContainer}>
                     <TransparentButton
                         onPress={this.onCancelButtonPress}
-                        text={'Отменить'}
+                        text={'Отменить талон'}
                         style={styles.transparentButton}
                     />
                     <Button
