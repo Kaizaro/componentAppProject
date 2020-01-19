@@ -3,10 +3,19 @@ import {StyleSheet, Text, View} from 'react-native';
 import {scaleHorizontal, scaleVertical} from '../../lib/util';
 import TransparentButton from '../../components/TransparentButton';
 import Button from '../../components/Button';
+import {APP_COLORS, APP_FONTS} from '../../Styles';
+
+let request;
 
 export default class RequestCreate extends Component {
+    constructor(props) {
+        super(props);
+        request = props.navigation.getParam('request');
+    }
+
     onCancelButtonPress = () => {
         console.log('cancelButton pressed');
+        this.props.navigation.goBack();
     };
 
     onConfirmRequestButtonPress = () => {
@@ -14,46 +23,61 @@ export default class RequestCreate extends Component {
     };
 
     renderRow = params => (
-        <View>
-            <View>
-                <Text>{params.title}</Text>
+        <View style={styles.rowContainer}>
+            <View style={styles.rowTitleContainer}>
+                <Text style={styles.rowTitleText}>{params.title}</Text>
             </View>
-            <View>
-                <Text>{params.data}</Text>
+            <View style={styles.rowDataContainer}>
+                <Text style={styles.rowDataText}>{params.data}</Text>
                 {params.details && <Text>{params.details}</Text>}
             </View>
         </View>
     );
 
     render() {
-        const request = this.props.navigation.getParam('request');
         return (
             <View style={styles.container}>
                 <View style={styles.contentContainer}>
                     {request && (
                         <Fragment>
+                            {/*{this.renderRow({*/}
+                            {/*    title: request.date,*/}
+                            {/*    data: 'ТБО',*/}
+                            {/*    details: `${request.tbo.cubometers} м3`,*/}
+                            {/*})}*/}
                             {this.renderRow({
-                                title: request.date,
-                                data: 'ТБО',
-                                details: `${request.tbo.cubometers} м3`,
+                                title: 'Чек id',
+                                data: request.id,
                             })}
                             {this.renderRow({
-                                title: 'Куда',
-                                data: 'Свалка ТЦ Филион',
+                                title: 'Компания',
+                                data: request.company,
                             })}
                             {this.renderRow({
-                                title: 'Машина',
-                                data: 'х123он 77',
+                                title: 'Полигон',
+                                data: request.polygon,
+                            })}
+                            {this.renderRow({
+                                title: 'Водитель, телефон',
+                                data: request.driver,
+                            })}
+                            {this.renderRow({
+                                title: 'Тоннаж',
+                                data: Math.round(request.tonnage),
+                            })}
+                            {this.renderRow({
+                                title: 'Тип отходов',
+                                data: request.typeWaste,
                             })}
                         </Fragment>
                     )}
+                </View>
+                <View style={styles.footerContainer}>
                     <TransparentButton
                         onPress={this.onCancelButtonPress}
                         text={'Отменить'}
                         style={styles.transparentButton}
                     />
-                </View>
-                <View style={styles.footerContainer}>
                     <Button
                         onPress={this.onConfirmRequestButtonPress}
                         text={'Подтвердить'}
@@ -78,15 +102,40 @@ const styles = StyleSheet.create({
         justifyContent: 'flex-start',
         alignItems: 'center',
     },
-    transparentButton: {
-        marginTop: scaleVertical(65),
-    },
     rowContainer: {
         flexDirection: 'row',
         alignItems: 'center',
+        width: '100%',
+        marginTop: scaleVertical(10),
+    },
+    rowTitleContainer: {
+        width: '40%',
+        justifyContent: 'flex-start',
+    },
+    rowTitleText: {
+        fontFamily: APP_FONTS.CERA_ROUND_PRO_BOLD,
+        fontSize: scaleHorizontal(16),
+        color: APP_COLORS.GREY,
+    },
+    rowDataContainer: {
+        width: '60%',
+        justifyContent: 'flex-start',
+    },
+    rowDataText: {
+        fontFamily: APP_FONTS.CERA_ROUND_PRO_BOLD,
+        fontSize: scaleHorizontal(16),
+        color: APP_COLORS.PRIMARY_BLACK,
+    },
+    transparentButton: {
+        height: scaleVertical(30),
+        paddingBottom: scaleVertical(10),
+        marginBottom: scaleVertical(20),
+        width: scaleHorizontal(285),
     },
     footerContainer: {
-        height: '15%',
+        position: 'absolute',
+        bottom: 0,
+        height: '30%',
         width: '100%',
         flexDirection: 'column',
         justifyContent: 'center',

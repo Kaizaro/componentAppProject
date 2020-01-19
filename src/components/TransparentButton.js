@@ -41,5 +41,5 @@ const styles = StyleSheet.create({
         fontSize: scaleHorizontal(18),
         color: APP_COLORS.PRIMARY_GREEN,
         textDecorationLine: 'underline',
-    }
+    },
 });
