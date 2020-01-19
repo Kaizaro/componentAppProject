@@ -82,6 +82,7 @@ class LoginScreen extends React.Component {
                             onChangeText={this.onUsernameChange}
                             placeholder={'E-mail или телефон'}
                             placeholderTextColor={APP_COLORS.DARK_GREY}
+                            keyboardType={'phone-pad'}
                             returnKeyType={'done'}
                             style={styles.inputFieldText}
                         />
