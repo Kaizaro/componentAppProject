@@ -5,11 +5,8 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 
 import logo from '../../assets/images/appLogoFull.jpg';
 import {APP_COLORS} from '../Styles';
-import {scaleVertical} from '../lib/util';
 import {NavigationActions, StackActions} from 'react-navigation';
 import {connect} from 'react-redux';
-import {clearToken} from '../store/actions/authActions';
-import {bindActionCreators} from 'redux';
 
 export const {width, height} = Dimensions.get('window');
 
@@ -92,11 +89,4 @@ const mapStateToProps = state => ({
     token: state.auth.token,
 });
 
-const mapDispatchToProps = dispatch => ({
-    authActions: bindActionCreators({clearToken}, dispatch),
-});
-
-export default connect(
-    mapStateToProps,
-    mapDispatchToProps,
-)(WelcomeScreen);
+export default connect(mapStateToProps)(WelcomeScreen);

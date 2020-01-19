@@ -1,7 +1,7 @@
 {
     "logs": [
         {
-            "outputFile": "/Users/kaizaro/componentAppProject/android/app/build/intermediates/incremental/mergeDebugResources/merged.dir/values-ta/values-ta.xml",
+            "outputFile": "/Users/kaizaro/componentappproject/android/app/build/intermediates/incremental/mergeDebugResources/merged.dir/values-ta/values-ta.xml",
             "map": [
                 {
                     "source": "/Users/kaizaro/.gradle/caches/transforms-2/files-2.1/185f5b9efd7c173d0ffd24d204b22e91/core-1.0.1/res/values-ta/values-ta.xml",

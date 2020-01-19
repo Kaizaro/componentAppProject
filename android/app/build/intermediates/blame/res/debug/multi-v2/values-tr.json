@@ -1,7 +1,7 @@
 {
     "logs": [
         {
-            "outputFile": "/Users/kaizaro/componentAppProject/android/app/build/intermediates/incremental/mergeDebugResources/merged.dir/values-tr/values-tr.xml",
+            "outputFile": "/Users/kaizaro/componentappproject/android/app/build/intermediates/incremental/mergeDebugResources/merged.dir/values-tr/values-tr.xml",
             "map": [
                 {
                     "source": "/Users/kaizaro/.gradle/caches/transforms-2/files-2.1/f9d7a78eba25693238e7c3edb3fcd63f/jetified-play-services-base-16.0.1/res/values-tr/values.xml",

@@ -13,7 +13,10 @@ class LogoutButton extends PureComponent {
 
     render() {
         return (
-            <TouchableOpacity activeOpacity={0.75} style={styles.container} onPress={this.onLogoutButtonPress}>
+            <TouchableOpacity
+                activeOpacity={0.75}
+                style={styles.container}
+                onPress={this.onLogoutButtonPress}>
                 <Icon size={30} color={APP_COLORS.GRAY} name={'sign-out'} />
             </TouchableOpacity>
         );
@@ -31,4 +34,7 @@ const mapDispatchToProps = dispatch => ({
     authActions: bindActionCreators({clearToken}, dispatch),
 });
 
-export default connect(mapDispatchToProps)(LogoutButton);
+export default connect(
+    null,
+    mapDispatchToProps,
+)(LogoutButton);
