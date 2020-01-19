@@ -24,14 +24,12 @@ export const authUser = async params => {
 
 export const getRequest = async params => {
     const token = store.store && store.store.getState().auth.token;
-    console.log(token);
+    console.log(params, params.request);
     try {
         const response = await axios({
             method: 'get',
-            url: `${params.request}`,
-            header: {
-                'Authorization-token': `FakeiRu2:${token}`,
-            },
+            url: `${baseUrl}${params.request}`,
+            'Authorization-token': `FakeiRu2:${token}`,
         });
         console.log(response);
         return response;

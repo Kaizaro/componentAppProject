@@ -6,6 +6,7 @@ import {scaleHorizontal, scaleVertical} from '../../lib/util';
 import {APP_COLORS, APP_FONTS} from '../../Styles';
 import TransparentButton from '../../components/TransparentButton';
 import Button from '../../components/Button';
+import {getCodeState} from "../../api/Requests";
 
 export default class ScanQRCodeScreen extends Component {
     state = {
@@ -20,6 +21,7 @@ export default class ScanQRCodeScreen extends Component {
             const code = codeData.data;
             if (code && code.length !== 0) {
                 this.setState({code});
+                this.onSendCodeButtonPress();
             }
         }
     };
@@ -37,9 +39,11 @@ export default class ScanQRCodeScreen extends Component {
         }
     };
 
-    onSendCodeButtonPress = () => {
+    onSendCodeButtonPress = async () => {
         const {code} = this.state;
         console.log(code);
+        const codeState = await getCodeState(code);
+        console.log(codeState);
     };
 
     isButtonDisabled = () => {
