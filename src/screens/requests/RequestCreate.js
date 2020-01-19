@@ -65,7 +65,7 @@ export default class RequestCreate extends Component {
                                     title: 'Объем',
                                     data: `${Math.round(
                                         request.tonnage,
-                                    )} куб.см`,
+                                    )} куб.см.`,
                                 })}
                             {request.tonnage &&
                                 this.renderRow({
