@@ -70,7 +70,7 @@ export default class RequestCreate extends Component {
                             {request.tonnage &&
                                 this.renderRow({
                                     title: 'Тоннаж',
-                                    data: `${Math.round(request.tonnage)} тонн`,
+                                    data: `${Math.round(request.tonnage)} т.`,
                                 })}
                             {this.renderRow({
                                 title: 'Тип отходов',
