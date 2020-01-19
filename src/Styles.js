@@ -3,8 +3,9 @@ export const APP_COLORS = {
     LIGHT_GREEN: '#24b572',
     GREEN_BLUE: '#5eb593',
     GRAY: '#a3a3a3',
-    BLACK: '#2E2E30',
-    GREY: '#7C8388',
-    YELLOW: '#feca3f',
-    GREEN: '#C3EA21',
+    PRIMARY_BLACK: '#2E2E30',
+    PRIMARY_GREEN: '#35E064',
+    GREY: '#DADADA',
+    YELLOW: '#FECA3F',
+    RED: '#F84E5E',
 };
