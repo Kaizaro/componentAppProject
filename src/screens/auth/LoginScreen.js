@@ -11,6 +11,13 @@ import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
 import {setToken} from '../../store/actions/authActions';
 
+//TODO Заменить иконку приложения с белым квадратом.
+// На Splash экране картинку увеличить
+// На экране входа заменить картинку на картинку без текста, увеличиваем картинку. Элементы распределить, чтобы был занят экран.
+// Сделать "Компонент" и "Система учета" текстом.
+// Сделать маску на номер телефон в формате +7 999 123-45-67
+// Добавить letterspacing.
+
 class LoginScreen extends React.Component {
     state = {
         username: '',
@@ -80,7 +87,7 @@ class LoginScreen extends React.Component {
                             contextMenuHidden={true}
                             defaultValue={username}
                             onChangeText={this.onUsernameChange}
-                            placeholder={'E-mail или телефон'}
+                            placeholder={'Логин'}
                             placeholderTextColor={APP_COLORS.DARK_GREY}
                             keyboardType={'phone-pad'}
                             returnKeyType={'done'}

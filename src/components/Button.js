@@ -40,7 +40,7 @@ class Button extends React.PureComponent {
 const styles = StyleSheet.create({
     container: {
         width: scaleHorizontal(225),
-        height: scaleVertical(40),
+        height: scaleVertical(60),
         backgroundColor: APP_COLORS.PRIMARY_GREEN,
         justifyContent: 'center',
         alignItems: 'center',

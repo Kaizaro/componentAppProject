@@ -48,7 +48,7 @@ const AppStack = createStackNavigator(
                     width: '20%',
                 },
                 headerTitle: () => <ScreenTitle title={'Свалка ТЦ Филион'} />,
-                headerLeft: () => <BackButton navigation={navigation} />,
+                headerLeft: () => null,
                 headerRight: () => <LogoutButton navigation={navigation} />,
             }),
         },

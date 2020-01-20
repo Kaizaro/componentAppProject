@@ -50,6 +50,7 @@ export default class ScanQRCodeScreen extends Component {
                 console.log('data !== false');
                 this.props.navigation.navigate('RequestCreate', {
                     request: codeState.data,
+                    code,
                 });
             }
         }

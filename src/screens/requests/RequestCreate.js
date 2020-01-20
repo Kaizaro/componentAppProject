@@ -45,8 +45,8 @@ export default class RequestCreate extends Component {
                             {/*    details: `${request.tbo.cubometers} м3`,*/}
                             {/*})}*/}
                             {this.renderRow({
-                                title: 'Чек id',
-                                data: request.id,
+                                title: 'Код талона',
+                                data: this.props.navigation.getParam('code'),
                             })}
                             {this.renderRow({
                                 title: 'Компания',
