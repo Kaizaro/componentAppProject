@@ -99,7 +99,7 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         flexDirection: 'column',
-        paddingVertical: scaleVertical(40),
+        // paddingVertical: scaleVertical(40),
         paddingHorizontal: scaleHorizontal(25),
         justifyContent: 'space-between',
         alignItems: 'center',
