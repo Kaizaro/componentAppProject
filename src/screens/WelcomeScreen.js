@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {Dimensions, Image, StyleSheet, Text, View} from 'react-native';
+import {Dimensions, Image, Platform, StyleSheet, Text, View} from 'react-native';
 
 import Icon from 'react-native-vector-icons/FontAwesome';
 
@@ -67,14 +67,11 @@ const styles = StyleSheet.create({
         flexDirection: 'column',
         justifyContent: 'flex-start',
         alignItems: 'center',
-        paddingTop: 200,
     },
     image: {
-        width: 225,
-        height: 150,
+        width: width - 50,
     },
     dataContainer: {
-        marginTop: 65,
         flexDirection: 'column',
         alignItems: 'center',
     },
