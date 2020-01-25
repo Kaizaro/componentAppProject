@@ -5,7 +5,6 @@ import {
     TextInput,
     Image,
     Text,
-    KeyboardAvoidingView,
 } from 'react-native';
 import {StackActions, NavigationActions} from 'react-navigation';
 import Button from '../../components/Button';
@@ -17,12 +16,6 @@ import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
 import {setToken} from '../../store/actions/authActions';
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
-
-//TODO
-// На экране входа заменить картинку на картинку без текста, увеличиваем картинку. Элементы распределить, чтобы был занят экран.
-// Сделать "Компонент" и "Система учета" текстом.
-// Сделать маску на номер телефон в формате +7 999 123-45-67
-// Добавить letterspacing.
 
 class LoginScreen extends React.Component {
     state = {
