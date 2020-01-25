@@ -16,6 +16,7 @@ import {authUser} from '../../api/Connect';
 import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
 import {setToken} from '../../store/actions/authActions';
+import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 
 //TODO
 // На экране входа заменить картинку на картинку без текста, увеличиваем картинку. Элементы распределить, чтобы был занят экран.
@@ -77,10 +78,10 @@ class LoginScreen extends React.Component {
         const {username, password} = this.state;
         return (
             <View style={styles.container}>
-                <KeyboardAvoidingView
-                    behavior={'padding'}
-                    enabled={true}
-                    style={styles.contentContainer}>
+                <KeyboardAwareScrollView
+                    showsVerticalScrollIndicator={false}
+                    style={{flex: 1}}
+                    contentContainerStyle={styles.contentContainer}>
                     <View style={styles.logoContainer}>
                         <Image
                             source={logo}
@@ -122,7 +123,7 @@ class LoginScreen extends React.Component {
                             disabled={this.isButtonDisabled()}
                         />
                     </View>
-                </KeyboardAvoidingView>
+                </KeyboardAwareScrollView>
             </View>
         );
     };
@@ -136,7 +137,6 @@ const styles = StyleSheet.create({
         alignItems: 'center',
     },
     contentContainer: {
-        flex: 1,
         paddingHorizontal: scaleHorizontal(30),
         paddingVertical: scaleVertical(20),
         flexDirection: 'column',
