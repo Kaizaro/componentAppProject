@@ -17,7 +17,7 @@ class Button extends React.PureComponent {
     };
 
     render = () => {
-        const {disabled, onPress, style, text} = this.props;
+        const {disabled, onPress, text} = this.props;
         return (
             <TouchableOpacity
                 disabled={disabled}
