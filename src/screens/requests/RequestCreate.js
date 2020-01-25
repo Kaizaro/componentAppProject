@@ -4,6 +4,8 @@ import {scaleHorizontal, scaleVertical} from '../../lib/util';
 import TransparentButton from '../../components/TransparentButton';
 import Button from '../../components/Button';
 import {APP_COLORS, APP_FONTS} from '../../Styles';
+import {setRequestStatus} from '../../api/Requests';
+import {NavigationActions, StackActions} from 'react-navigation';
 
 let request;
 
@@ -13,12 +15,59 @@ export default class RequestCreate extends Component {
         request = props.navigation.getParam('request');
     }
 
-    onCancelButtonPress = () => {
+    onCancelRequestButtonPress = async code => {
         console.log('cancelButton pressed');
+        const cancelRequestButtonResponse = await setRequestStatus(
+            code,
+            'unused',
+        );
+        console.log(cancelRequestButtonResponse);
+        if (cancelRequestButtonResponse && cancelRequestButtonResponse.status) {
+            if (
+                cancelRequestButtonResponse.status === 200 &&
+                cancelRequestButtonResponse.data
+            ) {
+                alert('Талон отменен диспетчером');
+                const resetAction = StackActions.reset({
+                    index: 0,
+                    actions: [
+                        NavigationActions.navigate({
+                            routeName: 'AppStack',
+                        }),
+                    ],
+                });
+                this.props.navigation.dispatch(resetAction);
+            }
+        }
     };
 
-    onConfirmRequestButtonPress = () => {
+    onConfirmRequestButtonPress = async code => {
         console.log('confirmRequestButtonPressed');
+        const confirmRequestButtonResponse = await setRequestStatus(
+            code,
+            'used',
+        );
+        console.log(confirmRequestButtonResponse);
+        if (
+            confirmRequestButtonResponse &&
+            confirmRequestButtonResponse.status
+        ) {
+            if (
+                confirmRequestButtonResponse.status === 200 &&
+                confirmRequestButtonResponse.data
+            ) {
+                alert('Талон принят диспетчером');
+                const resetAction = StackActions.reset({
+                    index: 0,
+                    actions: [
+                        NavigationActions.navigate({
+                            routeName: 'AppStack',
+                        }),
+                    ],
+                });
+                this.props.navigation.dispatch(resetAction);
+            }
+        }
     };
 
     renderRow = params => (
@@ -34,6 +83,7 @@ export default class RequestCreate extends Component {
     );
 
     render() {
+        const code = this.props.navigation.getParam('code');
         return (
             <View style={styles.container}>
                 <View style={styles.contentContainer}>
@@ -46,7 +96,7 @@ export default class RequestCreate extends Component {
                             {/*})}*/}
                             {this.renderRow({
                                 title: 'Код талона',
-                                data: this.props.navigation.getParam('code'),
+                                data: code,
                             })}
                             {this.renderRow({
                                 title: 'Компания',
@@ -81,12 +131,12 @@ export default class RequestCreate extends Component {
                 </View>
                 <View style={styles.footerContainer}>
                     <TransparentButton
-                        onPress={this.onCancelButtonPress}
+                        onPress={() => this.onCancelRequestButtonPress(code)}
                         text={'Отменить талон'}
                         style={styles.transparentButton}
                     />
                     <Button
-                        onPress={this.onConfirmRequestButtonPress}
+                        onPress={() => this.onConfirmRequestButtonPress(code)}
                         text={'Подтвердить'}
                     />
                 </View>

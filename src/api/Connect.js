@@ -43,3 +43,26 @@ export const getRequest = async params => {
         }
     }
 };
+
+export const POSTRequest = async params => {
+    const token = store.store && store.store.getState().auth.token;
+    console.log(params.request);
+    try {
+        const response = await axios({
+            method: 'post',
+            url: `${baseUrl}${params.request}`,
+            headers: {
+                'Authorization-Token': `FakeiRu2:${token}`,
+            },
+            data: params.data,
+        });
+        console.log(response);
+        return response;
+    } catch (error) {
+        console.log(error);
+        if (error && error.response) {
+            console.log(error.response);
+            return error.response;
+        }
+    }
+};
