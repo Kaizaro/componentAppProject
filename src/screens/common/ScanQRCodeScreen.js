@@ -21,7 +21,7 @@ export default class ScanQRCodeScreen extends Component {
             const code = codeData.data;
             if (code && code.length !== 0) {
                 this.setState({code});
-                this.onSendCodeButtonPress();
+                this.onSendCodeButtonPress(code);
             }
         }
     };
@@ -39,8 +39,7 @@ export default class ScanQRCodeScreen extends Component {
         }
     };
 
-    onSendCodeButtonPress = async () => {
-        const {code} = this.state;
+    onSendCodeButtonPress = async code => {
         console.log(code);
         const codeState = await getCodeState(code);
         console.log(codeState);
@@ -50,7 +49,10 @@ export default class ScanQRCodeScreen extends Component {
                 console.log('data !== false');
                 this.props.navigation.navigate('RequestCreate', {
                     request: codeState.data,
+                    code,
                 });
+            } else {
+                this.props.navigation.navigate('RequestError');
             }
         }
     };
@@ -84,7 +86,7 @@ export default class ScanQRCodeScreen extends Component {
             </View>
             <Button
                 style={styles.buttonContainer}
-                onPress={this.onSendCodeButtonPress}
+                onPress={() => this.onSendCodeButtonPress(this.state.code)}
                 text={'Отправить код'}
                 disabled={this.isButtonDisabled()}
             />

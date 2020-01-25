@@ -4,7 +4,6 @@ import {scaleHorizontal, scaleVertical} from '../../lib/util';
 import {APP_COLORS} from '../../Styles';
 import Button from '../../components/Button';
 import {clearToken} from '../../store/actions/authActions';
-import {NavigationActions, StackActions} from 'react-navigation';
 import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
 
@@ -52,22 +51,6 @@ class RequestsList extends Component {
                 },
             ],
         });
-    };
-
-    onLogoutButtonPress = () => {
-        console.log('CLEAR TOKEN');
-        this.props.clearToken();
-        if (this.props.token === '') {
-            const resetAction = StackActions.reset({
-                index: 0,
-                actions: [
-                    NavigationActions.navigate({
-                        routeName: 'AuthStack',
-                    }),
-                ],
-            });
-            this.props.navigation.dispatch(resetAction);
-        }
     };
 
     onItemPress = item => {
@@ -163,11 +146,11 @@ const styles = StyleSheet.create({
         alignItems: 'center',
     },
     dateText: {
-        color: APP_COLORS.GRAY,
+        color: APP_COLORS.GREY,
         fontSize: scaleHorizontal(18),
     },
     nameText: {
-        color: APP_COLORS.GRAY,
+        color: APP_COLORS.GREY,
         fontSize: scaleHorizontal(18),
         fontWeight: 'bold',
     },
