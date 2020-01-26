@@ -185,6 +185,7 @@ const styles = StyleSheet.create({
         fontFamily: APP_FONTS.CERA_ROUND_PRO_BOLD,
         color: APP_COLORS.PRIMARY_BLACK,
         textAlign: 'center',
+        letterSpacing: scaleHorizontal(0.5),
     },
     buttonContainer: {
         marginTop: scaleVertical(30),
