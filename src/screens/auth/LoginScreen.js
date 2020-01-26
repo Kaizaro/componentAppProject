@@ -1,11 +1,5 @@
 import React from 'react';
-import {
-    StyleSheet,
-    View,
-    TextInput,
-    Image,
-    Text,
-} from 'react-native';
+import {StyleSheet, View, TextInput, Image, Text} from 'react-native';
 import {StackActions, NavigationActions} from 'react-navigation';
 import Button from '../../components/Button';
 import logo from '../../../assets/images/appLogo.png';
@@ -25,7 +19,29 @@ class LoginScreen extends React.Component {
     };
 
     onUsernameChange = username => {
-        this.setState({username});
+        if (
+            username.replace(/\+7/g, '').startsWith('7') &&
+            username.replace(/\+7/g, '').length === 1
+        ) {
+            this.setState({
+                username: '+7',
+            });
+        } else {
+            if (
+                !username.startsWith('+7') &&
+                (username.replace(/\+7/g, '').startsWith('9') ||
+                    username.replace(/\+7/g, '').startsWith('8'))
+            ) {
+                this.setState({
+                    username:
+                        '+7' + username.replace(/\+7/g, '').replace(/-/g, ''),
+                });
+            } else {
+                this.setState({
+                    username: username.replace(/-/g, ''),
+                });
+            }
+        }
     };
 
     onPasswordChange = password => {
