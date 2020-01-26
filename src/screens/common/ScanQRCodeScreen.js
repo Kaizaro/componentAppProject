@@ -168,6 +168,7 @@ const styles = StyleSheet.create({
         fontSize: scaleHorizontal(16),
         color: APP_COLORS.PRIMARY_BLACK,
         textAlign: 'center',
+        letterSpacing: scaleHorizontal(0.5),
     },
     buttonContainer: {
         marginTop: scaleVertical(20),
