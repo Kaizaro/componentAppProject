@@ -1,64 +1,51 @@
 import React, {Component} from 'react';
 import {FlatList, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
 import {scaleHorizontal, scaleVertical} from '../../lib/util';
-import {APP_COLORS} from '../../Styles';
+import {APP_COLORS, APP_FONTS} from '../../Styles';
 import Button from '../../components/Button';
 import {clearToken} from '../../store/actions/authActions';
 import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
+import {getScanHistory} from '../../api/Requests';
 
 class RequestsList extends Component {
     state = {
         requests: null,
     };
 
-    componentDidMount = () => {
+    componentDidMount = async () => {
         console.log('here');
-        this.setState({
-            requests: [
-                {
-                    tbo: {
-                        cubometers: 150,
-                        weight: 501,
-                    },
-                    kgm: {
-                        cubometers: 150,
-                        weight: 501,
-                    },
-                    date: '22.08.2016',
-                },
-                {
-                    tbo: {
-                        cubometers: 100,
-                        weight: 485,
-                    },
-                    kgm: {
-                        cubometers: 100,
-                        weight: 485,
-                    },
-                    date: '21.08.2016',
-                },
-                {
-                    tbo: {
-                        cubometers: 245,
-                        weight: 1000,
-                    },
-                    kgm: {
-                        cubometers: 245,
-                        weight: 1000,
-                    },
-                    date: '20.08.2016',
-                },
-            ],
-        });
+        const scanRequests = await getScanHistory();
+        console.log(scanRequests);
+        if (
+            scanRequests &&
+            scanRequests.status &&
+            scanRequests.status === 200 &&
+            scanRequests.data
+        ) {
+            this.setState({requests: scanRequests.data});
+        }
+    };
+
+    getDate = timestamp => {
+        const date = new Date(timestamp * 1000);
+        const year = date.getFullYear();
+        const month = date.getMonth() + 1;
+        const day = date.getDate();
+        const hour = date.getHours();
+        const minute = date.getMinutes();
+        return `${day}/${month}/${year} ${hour}:${minute}`;
     };
 
     onItemPress = item => {
         console.log('onItemPress');
+        console.log(item);
+        this.props.navigation.navigate('RequestDetails', {
+            request: item,
+        });
     };
 
     onButtonPress = () => {
-        console.log('onButtonPress');
         this.props.navigation.navigate('ScanQRCodeScanner');
     };
 
@@ -71,29 +58,26 @@ class RequestsList extends Component {
         return (
             <TouchableOpacity
                 style={styles.rowContainer}
-                onPress={() => this.onItemPress()}>
+                onPress={() => this.onItemPress(item)}>
                 <View style={styles.dateContainer}>
-                    <Text style={styles.nameText}>ТБО</Text>
-                    <Text style={styles.dateText}>{item.date}</Text>
-                    <Text style={styles.nameText}>КГМ</Text>
+                    <Text style={styles.dateText}>
+                        {this.getDate(item.dateScan)}
+                    </Text>
                 </View>
-                <View style={styles.dataRowContainer}>
-                    <View style={styles.dataContainer}>
-                        <Text style={styles.dataText}>{`${
-                            item.tbo.cubometers
-                        } м3`}</Text>
-                        <Text style={styles.dataText}>{`${
-                            item.tbo.weight
-                        } тон`}</Text>
-                    </View>
-                    <View style={styles.dataContainer}>
-                        <Text style={styles.dataText}>{`${
-                            item.kgm.cubometers
-                        } м3`}</Text>
-                        <Text style={styles.dataText}>{`${
-                            item.kgm.weight
-                        } тон`}</Text>
-                    </View>
+                <View style={styles.dataContainer}>
+                    <Text style={styles.dataText}>{item.typeWaste}</Text>
+                </View>
+                <View style={styles.dataCountContainer}>
+                    {item.volume && (
+                        <Text style={styles.dataText}>{`Объем: ${Math.round(
+                            item.volume,
+                        )} м3`}</Text>
+                    )}
+                    {item.tonnage && (
+                        <Text style={styles.dataText}>{`Тоннаж: ${Math.round(
+                            item.tonnage,
+                        )} т.`}</Text>
+                    )}
                 </View>
             </TouchableOpacity>
         );
@@ -132,21 +116,21 @@ const styles = StyleSheet.create({
         alignItems: 'center',
     },
     rowContainer: {
-        width: '95%',
-        paddingVertical: scaleVertical(30),
-        flexDirection: 'column',
+        alignSelf: 'stretch',
+        paddingVertical: scaleVertical(20),
+        flexDirection: 'row',
         borderBottomWidth: scaleVertical(1),
         borderColor: APP_COLORS.LIGHT_GRAY,
         alignItems: 'center',
     },
     dateContainer: {
-        width: '70%',
+        width: '40%',
         flexDirection: 'row',
-        justifyContent: 'space-between',
+        justifyContent: 'flex-start',
         alignItems: 'center',
     },
     dateText: {
-        color: APP_COLORS.GREY,
+        color: APP_COLORS.DARK_GREY,
         fontSize: scaleHorizontal(18),
     },
     nameText: {
@@ -154,19 +138,23 @@ const styles = StyleSheet.create({
         fontSize: scaleHorizontal(18),
         fontWeight: 'bold',
     },
-    dataRowContainer: {
-        marginTop: scaleVertical(25),
-        width: '95%',
-        flexDirection: 'row',
-        justifyContent: 'space-between',
-    },
     dataContainer: {
-        width: '43%',
+        width: '20%',
         flexDirection: 'row',
-        justifyContent: 'space-between',
+        justifyContent: 'center',
     },
     dataText: {
+        fontFamily: APP_FONTS.CERA_ROUND_PRO_BOLD,
         fontSize: scaleHorizontal(16),
+        color: APP_COLORS.PRIMARY_BLACK,
+    },
+    dataCountContainer: {
+        marginLeft: scaleHorizontal(10),
+        paddingVertical: scaleVertical(10),
+        width: '40%',
+        flexDirection: 'column',
+        justifyContent: 'space-between',
+        alignItems: 'center',
     },
     buttonContainer: {
         position: 'absolute',

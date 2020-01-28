@@ -10,6 +10,7 @@ import LogoutButton from './LogoutButton';
 import ScreenTitle from './ScreenTitle';
 import BackButton from './BackButton';
 import RequestError from '../screens/requests/RequestError';
+import RequestDetails from "../screens/requests/RequestDetails";
 
 const AuthStack = createStackNavigator(
     {
@@ -95,6 +96,23 @@ const AppStack = createStackNavigator(
                     width: '20%',
                 },
                 headerTitle: () => <ScreenTitle title={'Ошибка'} />,
+                headerLeft: () => <BackButton navigation={navigation} />,
+                headerRight: () => null,
+            }),
+        },
+        RequestDetails: {
+            screen: RequestDetails,
+            navigationOptions: ({navigation}) => ({
+                headerTitleContainerStyle: {
+                    width: '73%',
+                },
+                headerLeftContainerStyle: {
+                    width: '20%',
+                },
+                headerRightContainerStyle: {
+                    width: '20%',
+                },
+                headerTitle: () => <ScreenTitle title={'Детали талона'} />,
                 headerLeft: () => <BackButton navigation={navigation} />,
                 headerRight: () => null,
             }),
