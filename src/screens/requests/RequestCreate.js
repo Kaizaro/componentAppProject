@@ -15,32 +15,6 @@ export default class RequestCreate extends Component {
         request = props.navigation.getParam('request');
     }
 
-    onCancelRequestButtonPress = async code => {
-        console.log('cancelButton pressed');
-        const cancelRequestButtonResponse = await setRequestStatus(
-            code,
-            'unused',
-        );
-        console.log(cancelRequestButtonResponse);
-        if (cancelRequestButtonResponse && cancelRequestButtonResponse.status) {
-            if (
-                cancelRequestButtonResponse.status === 200 &&
-                cancelRequestButtonResponse.data
-            ) {
-                alert('Талон отменен диспетчером');
-                const resetAction = StackActions.reset({
-                    index: 0,
-                    actions: [
-                        NavigationActions.navigate({
-                            routeName: 'AppStack',
-                        }),
-                    ],
-                });
-                this.props.navigation.dispatch(resetAction);
-            }
-        }
-    };
-
     onConfirmRequestButtonPress = async code => {
         console.log('confirmRequestButtonPressed');
         const confirmRequestButtonResponse = await setRequestStatus(
@@ -110,6 +84,10 @@ export default class RequestCreate extends Component {
                                 title: 'Водитель, телефон',
                                 data: request.driver,
                             })}
+                            {this.renderRow({
+                                title: 'Стоимость',
+                                data: request.price,
+                            })}
                             {request.volume &&
                                 this.renderRow({
                                     title: 'Объем',
@@ -130,11 +108,6 @@ export default class RequestCreate extends Component {
                     )}
                 </View>
                 <View style={styles.footerContainer}>
-                    <TransparentButton
-                        onPress={() => this.onCancelRequestButtonPress(code)}
-                        text={'Отменить талон'}
-                        style={styles.transparentButton}
-                    />
                     <Button
                         onPress={() => this.onConfirmRequestButtonPress(code)}
                         text={'Подтвердить'}
@@ -192,7 +165,7 @@ const styles = StyleSheet.create({
     footerContainer: {
         position: 'absolute',
         bottom: 0,
-        height: '30%',
+        height: '15%',
         width: '100%',
         flexDirection: 'column',
         justifyContent: 'center',

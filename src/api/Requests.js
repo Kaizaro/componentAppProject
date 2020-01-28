@@ -23,3 +23,13 @@ export const setRequestStatus = async (code, status) => {
         },
     });
 };
+
+export const setProblem = async (code, comment) => {
+    return await POSTRequest({
+        request: 'coupon/set-problem',
+        data: {
+            code,
+            comment,
+        },
+    });
+};
