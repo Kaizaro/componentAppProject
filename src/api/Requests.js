@@ -7,6 +7,12 @@ export const getCodeState = async code => {
     });
 };
 
+export const getScanHistory = async () => {
+    return await getRequest({
+        request: 'coupon/list',
+    });
+};
+
 export const setRequestStatus = async (code, status) => {
     console.log('code', code, '\nstatus', status);
     return await POSTRequest({
