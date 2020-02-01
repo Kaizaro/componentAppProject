@@ -44,13 +44,43 @@ export default class RequestCreate extends Component {
         }
     };
 
+    onCancelRequestButtonPress = async code => {
+        console.log('cancelButton pressed');
+        const cancelRequestButtonResponse = await setRequestStatus(
+            code,
+            'unused',
+        );
+        console.log(cancelRequestButtonResponse);
+        if (cancelRequestButtonResponse && cancelRequestButtonResponse.status) {
+            if (
+                cancelRequestButtonResponse.status === 200 &&
+                cancelRequestButtonResponse.data
+            ) {
+                alert('Талон отменен диспетчером');
+                const resetAction = StackActions.reset({
+                    index: 0,
+                    actions: [
+                        NavigationActions.navigate({
+                            routeName: 'AppStack',
+                        }),
+                    ],
+                });
+                this.props.navigation.dispatch(resetAction);
+            }
+        }
+    };
+
     renderRow = params => (
         <View style={styles.rowContainer}>
             <View style={styles.rowTitleContainer}>
                 <Text style={styles.rowTitleText}>{params.title}</Text>
             </View>
             <View style={styles.rowDataContainer}>
-                <Text style={styles.rowDataText}>{params.data}</Text>
+                <Text
+                    style={styles.rowDataText}
+                    onPress={params.pressAction ? params.pressAction : null}>
+                    {params.data}
+                </Text>
                 {params.details && <Text>{params.details}</Text>}
             </View>
         </View>
@@ -84,21 +114,20 @@ export default class RequestCreate extends Component {
                                 title: 'Водитель, телефон',
                                 data: request.driver,
                             })}
-                            {this.renderRow({
-                                title: 'Стоимость',
-                                data: request.price,
-                            })}
                             {request.volume &&
                                 this.renderRow({
                                     title: 'Объем',
-                                    data: `${Math.round(
-                                        request.tonnage,
+                                    data: `${parseFloat(request.volume).toFixed(
+                                        1,
                                     )} куб.см.`,
                                 })}
                             {request.tonnage &&
                                 this.renderRow({
                                     title: 'Тоннаж',
-                                    data: `${Math.round(request.tonnage)} т.`,
+                                    data: `${parseFloat(
+                                        request.tonnage,
+                                    ).toFixed(1)} т.`,
+                                    pressAction: () => console.log('Here'),
                                 })}
                             {this.renderRow({
                                 title: 'Тип отходов',
@@ -108,6 +137,11 @@ export default class RequestCreate extends Component {
                     )}
                 </View>
                 <View style={styles.footerContainer}>
+                    <TransparentButton
+                        onPress={() => this.onCancelRequestButtonPress(code)}
+                        text={'Отменить талон'}
+                        style={styles.transparentButton}
+                    />
                     <Button
                         onPress={() => this.onConfirmRequestButtonPress(code)}
                         text={'Подтвердить'}
@@ -165,7 +199,7 @@ const styles = StyleSheet.create({
     footerContainer: {
         position: 'absolute',
         bottom: 0,
-        height: '15%',
+        height: '30%',
         width: '100%',
         flexDirection: 'column',
         justifyContent: 'center',
