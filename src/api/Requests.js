@@ -33,3 +33,14 @@ export const setProblem = async (code, comment) => {
         },
     });
 };
+
+export const setRequestTonnageValue = async (code, tonnage) => {
+    console.log({code, tonnage});
+    return await POSTRequest({
+        request: 'coupon/set-value',
+        data: {
+            code,
+            tonnage,
+        },
+    });
+};

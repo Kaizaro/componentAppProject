@@ -4,16 +4,54 @@ import {scaleHorizontal, scaleVertical} from '../../lib/util';
 import TransparentButton from '../../components/TransparentButton';
 import Button from '../../components/Button';
 import {APP_COLORS, APP_FONTS} from '../../Styles';
-import {setRequestStatus} from '../../api/Requests';
+import {setRequestStatus, setRequestTonnageValue} from '../../api/Requests';
 import {NavigationActions, StackActions} from 'react-navigation';
+import ChangeDataFieldInput from '../../components/ChangeDataFieldInput';
 
 let request;
+let code;
 
 export default class RequestCreate extends Component {
     constructor(props) {
         super(props);
         request = props.navigation.getParam('request');
+        code = props.navigation.getParam('code');
+        this.state = {
+            showInputField: false,
+            tonnage: 0,
+        };
     }
+
+    onChangeTonnage = tonnage => {
+        console.log(tonnage);
+        this.setState({tonnage});
+    };
+
+    showInputField = () => {
+        this.setState({showInputField: true});
+    };
+
+    closeInputField = () => {
+        this.setState({showInputField: false});
+    };
+
+    onChangeTonnageInRequest = async () => {
+        const {tonnage} = this.state;
+        if (
+            parseInt(request.tonnage) + 5 < parseInt(tonnage) ||
+            parseInt(tonnage) < parseInt(request.tonnage)
+        ) {
+            alert(
+                'Вы не можете ввести такое количество тонн. Введите правильное количество.',
+            );
+        } else {
+            const setTonnageValue = await setRequestTonnageValue(
+                code,
+                parseFloat(tonnage),
+            );
+            console.log(setTonnageValue);
+        }
+    };
 
     onConfirmRequestButtonPress = async code => {
         console.log('confirmRequestButtonPressed');
@@ -26,10 +64,7 @@ export default class RequestCreate extends Component {
             confirmRequestButtonResponse &&
             confirmRequestButtonResponse.status
         ) {
-            if (
-                confirmRequestButtonResponse.status === 200 &&
-                confirmRequestButtonResponse.data
-            ) {
+            if (confirmRequestButtonResponse.status === 200) {
                 alert('Талон принят диспетчером');
                 const resetAction = StackActions.reset({
                     index: 0,
@@ -52,10 +87,7 @@ export default class RequestCreate extends Component {
         );
         console.log(cancelRequestButtonResponse);
         if (cancelRequestButtonResponse && cancelRequestButtonResponse.status) {
-            if (
-                cancelRequestButtonResponse.status === 200 &&
-                cancelRequestButtonResponse.data
-            ) {
+            if (cancelRequestButtonResponse.status === 200) {
                 alert('Талон отменен диспетчером');
                 const resetAction = StackActions.reset({
                     index: 0,
@@ -68,6 +100,20 @@ export default class RequestCreate extends Component {
                 this.props.navigation.dispatch(resetAction);
             }
         }
+    };
+
+    renderModal = () => {
+        const {showInputField, tonnage} = this.state;
+        return (
+            <ChangeDataFieldInput
+                defaultValue={request.tonnage}
+                value={tonnage}
+                valueChange={this.onChangeTonnage}
+                valueSubmit={this.onChangeTonnageInRequest}
+                visibleField={showInputField}
+                fieldClose={this.closeInputField}
+            />
+        );
     };
 
     renderRow = params => (
@@ -87,7 +133,6 @@ export default class RequestCreate extends Component {
     );
 
     render() {
-        const code = this.props.navigation.getParam('code');
         return (
             <View style={styles.container}>
                 <View style={styles.contentContainer}>
@@ -127,7 +172,7 @@ export default class RequestCreate extends Component {
                                     data: `${parseFloat(
                                         request.tonnage,
                                     ).toFixed(1)} т.`,
-                                    pressAction: () => console.log('Here'),
+                                    pressAction: this.showInputField,
                                 })}
                             {this.renderRow({
                                 title: 'Тип отходов',
@@ -147,6 +192,7 @@ export default class RequestCreate extends Component {
                         text={'Подтвердить'}
                     />
                 </View>
+                {this.renderModal()}
             </View>
         );
     }
