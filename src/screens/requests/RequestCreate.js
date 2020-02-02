@@ -1,19 +1,77 @@
 import React, {Component, Fragment} from 'react';
-import {StyleSheet, Text, View} from 'react-native';
+import {StyleSheet, Text, TouchableOpacity, View} from 'react-native';
 import {scaleHorizontal, scaleVertical} from '../../lib/util';
 import TransparentButton from '../../components/TransparentButton';
 import Button from '../../components/Button';
 import {APP_COLORS, APP_FONTS} from '../../Styles';
-import {setRequestStatus} from '../../api/Requests';
+import {
+    getCodeState,
+    setRequestStatus,
+    setRequestTonnageValue,
+} from '../../api/Requests';
 import {NavigationActions, StackActions} from 'react-navigation';
+import ChangeDataFieldInput from '../../components/ChangeDataFieldInput';
+import Icon from 'react-native-vector-icons/FontAwesome';
 
-let request;
+let code;
 
 export default class RequestCreate extends Component {
     constructor(props) {
         super(props);
-        request = props.navigation.getParam('request');
+        const request = props.navigation.getParam('request');
+        code = props.navigation.getParam('code');
+        const tonnage = props.navigation.getParam('tonnage');
+        this.state = {
+            showInputField: false,
+            tonnage: tonnage ? parseFloat(tonnage).toFixed(1) : null,
+            request: request,
+        };
     }
+
+    onChangeTonnage = tonnage => {
+        console.log(tonnage);
+        this.setState({tonnage});
+    };
+
+    showInputField = () => {
+        this.setState({showInputField: true});
+    };
+
+    closeInputField = () => {
+        this.setState({showInputField: false});
+    };
+
+    onChangeTonnageInRequest = async () => {
+        const {tonnage, request} = this.state;
+        if (
+            parseInt(request.tonnage) + 5 < parseInt(tonnage) ||
+            parseInt(tonnage) < parseInt(request.tonnage)
+        ) {
+            alert(
+                'Вы не можете ввести такое количество тонн. Введите правильное количество.',
+            );
+        } else {
+            const setTonnageValue = await setRequestTonnageValue(code, tonnage);
+            console.log(setTonnageValue);
+            if (
+                setTonnageValue &&
+                setTonnageValue.status &&
+                setTonnageValue.status === 200
+            ) {
+                this.getRequestData();
+            }
+        }
+    };
+
+    getRequestData = async () => {
+        const codeState = await getCodeState(code);
+        console.log(codeState);
+        if (codeState && codeState.status && codeState.status === 200) {
+            this.setState({request: codeState.data}, () =>
+                this.closeInputField(),
+            );
+        }
+    };
 
     onConfirmRequestButtonPress = async code => {
         console.log('confirmRequestButtonPressed');
@@ -26,10 +84,7 @@ export default class RequestCreate extends Component {
             confirmRequestButtonResponse &&
             confirmRequestButtonResponse.status
         ) {
-            if (
-                confirmRequestButtonResponse.status === 200 &&
-                confirmRequestButtonResponse.data
-            ) {
+            if (confirmRequestButtonResponse.status === 200) {
                 alert('Талон принят диспетчером');
                 const resetAction = StackActions.reset({
                     index: 0,
@@ -44,20 +99,69 @@ export default class RequestCreate extends Component {
         }
     };
 
+    onCancelRequestButtonPress = async code => {
+        console.log('cancelButton pressed');
+        const cancelRequestButtonResponse = await setRequestStatus(
+            code,
+            'unused',
+        );
+        console.log(cancelRequestButtonResponse);
+        if (cancelRequestButtonResponse && cancelRequestButtonResponse.status) {
+            if (cancelRequestButtonResponse.status === 200) {
+                alert('Талон отменен диспетчером');
+                const resetAction = StackActions.reset({
+                    index: 0,
+                    actions: [
+                        NavigationActions.navigate({
+                            routeName: 'AppStack',
+                        }),
+                    ],
+                });
+                this.props.navigation.dispatch(resetAction);
+            }
+        }
+    };
+
+    renderModal = () => {
+        const {showInputField, tonnage, request} = this.state;
+        return (
+            <ChangeDataFieldInput
+                defaultValue={request.tonnage}
+                value={tonnage}
+                valueChange={this.onChangeTonnage}
+                valueSubmit={this.onChangeTonnageInRequest}
+                visibleField={showInputField}
+                fieldClose={this.closeInputField}
+            />
+        );
+    };
+
     renderRow = params => (
-        <View style={styles.rowContainer}>
+        <TouchableOpacity
+            activeOpacity={0.1}
+            disabled={!params.pressAction}
+            onPress={params.pressAction}
+            style={styles.rowContainer}>
             <View style={styles.rowTitleContainer}>
                 <Text style={styles.rowTitleText}>{params.title}</Text>
             </View>
             <View style={styles.rowDataContainer}>
                 <Text style={styles.rowDataText}>{params.data}</Text>
-                {params.details && <Text>{params.details}</Text>}
+                {params.pressAction && (
+                    <Icon
+                        style={{marginTop: scaleVertical(2)}}
+                        name={'edit'}
+                        size={20}
+                        color={APP_COLORS.DARK_GREY}
+                    />
+                )}
             </View>
-        </View>
+        </TouchableOpacity>
     );
 
     render() {
-        const code = this.props.navigation.getParam('code');
+        const {request} = this.state;
+        console.log(request.tonnage);
         return (
             <View style={styles.container}>
                 <View style={styles.contentContainer}>
@@ -84,21 +188,20 @@ export default class RequestCreate extends Component {
                                 title: 'Водитель, телефон',
                                 data: request.driver,
                             })}
-                            {this.renderRow({
-                                title: 'Стоимость',
-                                data: request.price,
-                            })}
                             {request.volume &&
                                 this.renderRow({
                                     title: 'Объем',
-                                    data: `${Math.round(
-                                        request.tonnage,
+                                    data: `${parseFloat(request.volume).toFixed(
+                                        1,
                                     )} куб.см.`,
                                 })}
                             {request.tonnage &&
                                 this.renderRow({
                                     title: 'Тоннаж',
-                                    data: `${Math.round(request.tonnage)} т.`,
+                                    data: `${parseFloat(
+                                        request.tonnage,
+                                    ).toFixed(1)} т.`,
+                                    pressAction: this.showInputField,
                                 })}
                             {this.renderRow({
                                 title: 'Тип отходов',
@@ -108,11 +211,17 @@ export default class RequestCreate extends Component {
                     )}
                 </View>
                 <View style={styles.footerContainer}>
+                    <TransparentButton
+                        onPress={() => this.onCancelRequestButtonPress(code)}
+                        text={'Отменить талон'}
+                        style={styles.transparentButton}
+                    />
                     <Button
                         onPress={() => this.onConfirmRequestButtonPress(code)}
                         text={'Подтвердить'}
                     />
                 </View>
+                {this.renderModal()}
             </View>
         );
     }
@@ -148,8 +257,10 @@ const styles = StyleSheet.create({
         color: APP_COLORS.GREY,
     },
     rowDataContainer: {
+        flexDirection: 'row',
         width: '60%',
-        justifyContent: 'flex-start',
+        justifyContent: 'space-between',
+        alignItems: 'center',
     },
     rowDataText: {
         fontFamily: APP_FONTS.CERA_ROUND_PRO_BOLD,
@@ -165,7 +276,7 @@ const styles = StyleSheet.create({
     footerContainer: {
         position: 'absolute',
         bottom: 0,
-        height: '15%',
+        height: '30%',
         width: '100%',
         flexDirection: 'column',
         justifyContent: 'center',

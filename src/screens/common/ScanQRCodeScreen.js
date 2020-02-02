@@ -6,7 +6,7 @@ import {scaleHorizontal, scaleVertical} from '../../lib/util';
 import {APP_COLORS, APP_FONTS} from '../../Styles';
 import TransparentButton from '../../components/TransparentButton';
 import Button from '../../components/Button';
-import {getCodeState} from "../../api/Requests";
+import {getCodeState} from '../../api/Requests';
 
 export default class ScanQRCodeScreen extends Component {
     state = {
@@ -50,6 +50,7 @@ export default class ScanQRCodeScreen extends Component {
                 this.props.navigation.navigate('RequestCreate', {
                     request: codeState.data,
                     code,
+                    tonnage: codeState.data.tonnage,
                 });
             } else {
                 this.props.navigation.navigate('RequestError');

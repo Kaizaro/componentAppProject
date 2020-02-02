@@ -147,21 +147,19 @@ export default class RequestDetails extends Component {
                                 title: 'Водитель, телефон',
                                 data: request.driver,
                             })}
-                            {this.renderRow({
-                                title: 'Стоимость',
-                                data: request.price,
-                            })}
                             {request.volume &&
                                 this.renderRow({
                                     title: 'Объем',
-                                    data: `${Math.round(
-                                        request.tonnage,
+                                    data: `${parseFloat(request.volume).toFixed(
+                                        1,
                                     )} куб.см.`,
                                 })}
                             {request.tonnage &&
                                 this.renderRow({
                                     title: 'Тоннаж',
-                                    data: `${Math.round(request.tonnage)} т.`,
+                                    data: `${parseFloat(
+                                        request.tonnage,
+                                    ).toFixed(1)} т.`,
                                 })}
                             {this.renderRow({
                                 title: 'Тип отходов',
