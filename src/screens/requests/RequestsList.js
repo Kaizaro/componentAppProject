@@ -23,7 +23,34 @@ class RequestsList extends Component {
             scanRequests.status === 200 &&
             scanRequests.data
         ) {
-            this.setState({requests: scanRequests.data});
+            let filteredRequests = [];
+            scanRequests.data.map(scanRequest => {
+                console.log(scanRequest);
+                console.log('filteredRequests', filteredRequests);
+                if (filteredRequests.length === 0) {
+                    filteredRequests.push({
+                        date: this.getDate(scanRequest.dateScan),
+                        data: [scanRequest],
+                    });
+                } else {
+                    filteredRequests.map(filteredRequest => {
+                        console.log(filteredRequest);
+                        if (
+                            filteredRequest.date ===
+                            this.getDate(scanRequest.dateScan)
+                        ) {
+                            filteredRequest.data.push(scanRequest);
+                        } else {
+                            filteredRequests.push({
+                                date: this.getDate(scanRequest.dateScan),
+                                data: [scanRequest],
+                            });
+                        }
+                    });
+                }
+            });
+            console.log('in end of logic', filteredRequests);
+            this.setState({requests: filteredRequests});
         }
     };
 
@@ -32,9 +59,7 @@ class RequestsList extends Component {
         const year = date.getFullYear();
         const month = date.getMonth() + 1;
         const day = date.getDate();
-        const hour = date.getHours();
-        const minute = date.getMinutes();
-        return `${day}/${month}/${year} ${hour}:${minute}`;
+        return `${day}/${month}/${year}`;
     };
 
     onItemPress = item => {
@@ -53,32 +78,42 @@ class RequestsList extends Component {
         console.log('EMPTY LIST');
     };
 
+    renderDate = (date, count) => (
+        <View>
+            <Text>
+                {date}
+            </Text>
+            <Text>{count}</Text>
+        </View>
+    );
+
     renderItem = ({item, index}) => {
-        console.log(item, index);
+        console.log('item', item, index);
         return (
             <TouchableOpacity
                 style={styles.rowContainer}
                 onPress={() => this.onItemPress(item)}>
-                <View style={styles.dateContainer}>
-                    <Text style={styles.dateText}>
-                        {this.getDate(item.dateScan)}
-                    </Text>
-                </View>
-                <View style={styles.dataContainer}>
-                    <Text style={styles.dataText}>{item.typeWaste}</Text>
-                </View>
-                <View style={styles.dataCountContainer}>
-                    {item.volume && (
-                        <Text style={styles.dataText}>{`Объем: ${Math.round(
-                            item.volume,
-                        )} м3`}</Text>
-                    )}
-                    {item.tonnage && (
-                        <Text style={styles.dataText}>{`Тоннаж: ${Math.round(
-                            item.tonnage,
-                        )} т.`}</Text>
-                    )}
-                </View>
+                {this.renderDate(item.date, item.data.length)}
+                {/*<View style={styles.dateContainer}>*/}
+                {/*    <Text style={styles.dateText}>*/}
+                {/*        {this.getDate(item.dateScan)}*/}
+                {/*    </Text>*/}
+                {/*</View>*/}
+                {/*<View style={styles.dataContainer}>*/}
+                {/*    <Text style={styles.dataText}>{item.typeWaste}</Text>*/}
+                {/*</View>*/}
+                {/*<View style={styles.dataCountContainer}>*/}
+                {/*    {item.volume && (*/}
+                {/*        <Text style={styles.dataText}>{`Объем: ${Math.round(*/}
+                {/*            item.volume,*/}
+                {/*        )} м3`}</Text>*/}
+                {/*    )}*/}
+                {/*    {item.tonnage && (*/}
+                {/*        <Text style={styles.dataText}>{`Тоннаж: ${Math.round(*/}
+                {/*            item.tonnage,*/}
+                {/*        )} т.`}</Text>*/}
+                {/*    )}*/}
+                {/*</View>*/}
             </TouchableOpacity>
         );
     };
