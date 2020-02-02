@@ -13,17 +13,18 @@ import {NavigationActions, StackActions} from 'react-navigation';
 import ChangeDataFieldInput from '../../components/ChangeDataFieldInput';
 import Icon from 'react-native-vector-icons/FontAwesome';
 
-let request;
 let code;
 
 export default class RequestCreate extends Component {
     constructor(props) {
         super(props);
-        request = props.navigation.getParam('request');
+        const request = props.navigation.getParam('request');
         code = props.navigation.getParam('code');
+        const tonnage = props.navigation.getParam('tonnage');
         this.state = {
             showInputField: false,
-            tonnage: parseFloat(parseFloat(request.tonnage).toFixed(1)),
+            tonnage: tonnage ? parseFloat(tonnage).toFixed(1) : null,
+            request: request,
         };
     }
 
@@ -41,7 +42,7 @@ export default class RequestCreate extends Component {
     };
 
     onChangeTonnageInRequest = async () => {
-        const {tonnage} = this.state;
+        const {tonnage, request} = this.state;
         if (
             parseInt(request.tonnage) + 5 < parseInt(tonnage) ||
             parseInt(tonnage) < parseInt(request.tonnage)
@@ -122,7 +123,7 @@ export default class RequestCreate extends Component {
     };
 
     renderModal = () => {
-        const {showInputField, tonnage} = this.state;
+        const {showInputField, tonnage, request} = this.state;
         return (
             <ChangeDataFieldInput
                 defaultValue={request.tonnage}
@@ -159,6 +160,8 @@ export default class RequestCreate extends Component {
     );
 
     render() {
+        const {request} = this.state;
+        console.log(request.tonnage);
         return (
             <View style={styles.container}>
                 <View style={styles.contentContainer}>
