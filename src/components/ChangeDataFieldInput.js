@@ -45,7 +45,6 @@ export default class ChangeDataFieldInput extends Component {
                             autoFocus={true}
                             keyboardType={'numeric'}
                             returnKeyType={'done'}
-                            maxLength={3}
                             style={styles.textInput}
                         />
                     </View>
@@ -66,8 +65,7 @@ export default class ChangeDataFieldInput extends Component {
 
 const styles = StyleSheet.create({
     container: {
-        width,
-        height: height / 2,
+        flex: 1,
         paddingHorizontal: scaleHorizontal(20),
         paddingVertical: scaleVertical(20),
         alignItems: 'center',

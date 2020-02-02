@@ -40,7 +40,7 @@ export const setRequestTonnageValue = async (code, tonnage) => {
         request: 'coupon/set-value',
         data: {
             code,
-            tonnage,
+            value: tonnage,
         },
     });
 };

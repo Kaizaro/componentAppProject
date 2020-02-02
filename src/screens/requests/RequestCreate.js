@@ -1,12 +1,17 @@
 import React, {Component, Fragment} from 'react';
-import {StyleSheet, Text, View} from 'react-native';
+import {StyleSheet, Text, TouchableOpacity, View} from 'react-native';
 import {scaleHorizontal, scaleVertical} from '../../lib/util';
 import TransparentButton from '../../components/TransparentButton';
 import Button from '../../components/Button';
 import {APP_COLORS, APP_FONTS} from '../../Styles';
-import {setRequestStatus, setRequestTonnageValue} from '../../api/Requests';
+import {
+    getCodeState,
+    setRequestStatus,
+    setRequestTonnageValue,
+} from '../../api/Requests';
 import {NavigationActions, StackActions} from 'react-navigation';
 import ChangeDataFieldInput from '../../components/ChangeDataFieldInput';
+import Icon from 'react-native-vector-icons/FontAwesome';
 
 let request;
 let code;
@@ -18,7 +23,7 @@ export default class RequestCreate extends Component {
         code = props.navigation.getParam('code');
         this.state = {
             showInputField: false,
-            tonnage: 0,
+            tonnage: parseFloat(parseFloat(request.tonnage).toFixed(1)),
         };
     }
 
@@ -45,11 +50,25 @@ export default class RequestCreate extends Component {
                 'Вы не можете ввести такое количество тонн. Введите правильное количество.',
             );
         } else {
-            const setTonnageValue = await setRequestTonnageValue(
-                code,
-                parseFloat(tonnage),
-            );
+            const setTonnageValue = await setRequestTonnageValue(code, tonnage);
             console.log(setTonnageValue);
+            if (
+                setTonnageValue &&
+                setTonnageValue.status &&
+                setTonnageValue.status === 200
+            ) {
+                this.getRequestData();
+            }
+        }
+    };
+
+    getRequestData = async () => {
+        const codeState = await getCodeState(code);
+        console.log(codeState);
+        if (codeState && codeState.status && codeState.status === 200) {
+            this.setState({request: codeState.data}, () =>
+                this.closeInputField(),
+            );
         }
     };
 
@@ -117,19 +136,26 @@ export default class RequestCreate extends Component {
     };
 
     renderRow = params => (
-        <View style={styles.rowContainer}>
+        <TouchableOpacity
+            activeOpacity={0.1}
+            disabled={!params.pressAction}
+            onPress={params.pressAction}
+            style={styles.rowContainer}>
             <View style={styles.rowTitleContainer}>
                 <Text style={styles.rowTitleText}>{params.title}</Text>
             </View>
             <View style={styles.rowDataContainer}>
-                <Text
-                    style={styles.rowDataText}
-                    onPress={params.pressAction ? params.pressAction : null}>
-                    {params.data}
-                </Text>
-                {params.details && <Text>{params.details}</Text>}
+                <Text style={styles.rowDataText}>{params.data}</Text>
+                {params.pressAction && (
+                    <Icon
+                        style={{marginTop: scaleVertical(2)}}
+                        name={'edit'}
+                        size={20}
+                        color={APP_COLORS.DARK_GREY}
+                    />
+                )}
             </View>
-        </View>
+        </TouchableOpacity>
     );
 
     render() {
@@ -228,8 +254,10 @@ const styles = StyleSheet.create({
         color: APP_COLORS.GREY,
     },
     rowDataContainer: {
+        flexDirection: 'row',
         width: '60%',
-        justifyContent: 'flex-start',
+        justifyContent: 'space-between',
+        alignItems: 'center',
     },
     rowDataText: {
         fontFamily: APP_FONTS.CERA_ROUND_PRO_BOLD,
