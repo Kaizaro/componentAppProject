@@ -25,11 +25,10 @@ export default class RequestGroup extends Component {
         console.log('item', item, index);
         return (
             <View style={styles.blockContainer}>
-                {this.renderDate()}
+                {this.renderDate(date, dataLength)}
                 <TouchableOpacity
                     onPress={() => this.onItemPress(item)}
                     style={styles.dataContainer}>
-                    {this.renderDate(date, dataLength)}
                     <Text style={styles.dataText}>
                         {this.getHours(item.dateScan)} {item.typeWaste},{' '}
                         {item.tonnage
@@ -40,26 +39,6 @@ export default class RequestGroup extends Component {
                             : ''}
                     </Text>
                 </TouchableOpacity>
-                {/*<View style={styles.dateContainer}>*/}
-                {/*    <Text style={styles.dateText}>*/}
-                {/*        {this.getDate(item.dateScan)}*/}
-                {/*    </Text>*/}
-                {/*</View>*/}
-                {/*<View style={styles.dataContainer}>*/}
-                {/*    <Text style={styles.dataText}>{item.typeWaste}</Text>*/}
-                {/*</View>*/}
-                {/*<View style={styles.dataCountContainer}>*/}
-                {/*    {item.volume && (*/}
-                {/*        <Text style={styles.dataText}>{`Объем: ${Math.round(*/}
-                {/*            item.volume,*/}
-                {/*        )} м3`}</Text>*/}
-                {/*    )}*/}
-                {/*    {item.tonnage && (*/}
-                {/*        <Text style={styles.dataText}>{`Тоннаж: ${Math.round(*/}
-                {/*            item.tonnage,*/}
-                {/*        )} т.`}</Text>*/}
-                {/*    )}*/}
-                {/*</View>*/}
             </View>
         );
     };

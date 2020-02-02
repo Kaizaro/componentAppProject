@@ -116,26 +116,6 @@ class RequestsList extends Component {
                         item.data.length,
                     );
                 })}
-                {/*<View style={styles.dateContainer}>*/}
-                {/*    <Text style={styles.dateText}>*/}
-                {/*        {this.getDate(item.dateScan)}*/}
-                {/*    </Text>*/}
-                {/*</View>*/}
-                {/*<View style={styles.dataContainer}>*/}
-                {/*    <Text style={styles.dataText}>{item.typeWaste}</Text>*/}
-                {/*</View>*/}
-                {/*<View style={styles.dataCountContainer}>*/}
-                {/*    {item.volume && (*/}
-                {/*        <Text style={styles.dataText}>{`Объем: ${Math.round(*/}
-                {/*            item.volume,*/}
-                {/*        )} м3`}</Text>*/}
-                {/*    )}*/}
-                {/*    {item.tonnage && (*/}
-                {/*        <Text style={styles.dataText}>{`Тоннаж: ${Math.round(*/}
-                {/*            item.tonnage,*/}
-                {/*        )} т.`}</Text>*/}
-                {/*    )}*/}
-                {/*</View>*/}
             </View>
         );
     };
@@ -182,6 +162,7 @@ class RequestsList extends Component {
             <View style={styles.container}>
                 {requests && (
                     <FlatList
+                        keyExtractor={requests.date}
                         data={requests}
                         renderItem={this.renderItem}
                         ListEmptyComponent={this.renderEmptyList}
