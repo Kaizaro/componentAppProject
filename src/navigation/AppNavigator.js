@@ -11,6 +11,7 @@ import ScreenTitle from './ScreenTitle';
 import BackButton from './BackButton';
 import RequestError from '../screens/requests/RequestError';
 import RequestDetails from "../screens/requests/RequestDetails";
+import RequestGroup from "../screens/requests/RequestGroup";
 
 const AuthStack = createStackNavigator(
     {
@@ -117,6 +118,23 @@ const AppStack = createStackNavigator(
                 headerRight: () => null,
             }),
         },
+        RequestGroup: {
+            screen: RequestGroup,
+            navigationOptions: ({navigation}) => ({
+                headerTitleContainerStyle: {
+                    width: '73%',
+                },
+                headerLeftContainerStyle: {
+                    width: '20%',
+                },
+                headerRightContainerStyle: {
+                    width: '20%',
+                },
+                headerTitle: () => <ScreenTitle title={'Сканирования по дате'} />,
+                headerLeft: () => <BackButton navigation={navigation} />,
+                headerRight: () => null,
+            }),
+        }
     },
     {
         initialRouteName: 'RequestsList',
