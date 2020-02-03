@@ -20,17 +20,15 @@ export default class RequestCreate extends Component {
         super(props);
         const request = props.navigation.getParam('request');
         code = props.navigation.getParam('code');
-        const tonnage = props.navigation.getParam('tonnage');
         this.state = {
             showInputField: false,
-            tonnage: tonnage ? parseFloat(tonnage).toFixed(1) : null,
+            tonnageToAdd: '',
             request: request,
         };
     }
 
-    onChangeTonnage = tonnage => {
-        console.log(tonnage);
-        this.setState({tonnage});
+    onChangeTonnage = tonnageToAdd => {
+        this.setState({tonnageToAdd});
     };
 
     showInputField = () => {
@@ -42,16 +40,21 @@ export default class RequestCreate extends Component {
     };
 
     onChangeTonnageInRequest = async () => {
-        const {tonnage, request} = this.state;
-        if (
-            parseInt(request.tonnage) + 5 < parseInt(tonnage) ||
-            parseInt(tonnage) < parseInt(request.tonnage)
-        ) {
+        const {tonnageToAdd, request} = this.state;
+        if (parseInt(tonnageToAdd) < 0 || parseInt(tonnageToAdd) > 5) {
             alert(
                 'Вы не можете ввести такое количество тонн. Введите правильное количество.',
             );
         } else {
-            const setTonnageValue = await setRequestTonnageValue(code, tonnage);
+            const tonnage =
+                tonnageToAdd.length !== 0
+                    ? parseFloat(parseFloat(request.tonnage).toFixed(1)) +
+                      parseFloat(tonnageToAdd)
+                    : null;
+            console.log(tonnage);
+            const setTonnageValue = tonnage
+                ? await setRequestTonnageValue(code, tonnage.toString())
+                : null;
             console.log(setTonnageValue);
             if (
                 setTonnageValue &&

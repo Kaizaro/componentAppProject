@@ -12,8 +12,6 @@ import {APP_COLORS, APP_FONTS} from '../Styles';
 import Button from './Button';
 import TransparentButton from './TransparentButton';
 
-const {width, height} = Dimensions.get('window');
-
 export default class ChangeDataFieldInput extends Component {
     render() {
         const {
@@ -34,9 +32,12 @@ export default class ChangeDataFieldInput extends Component {
                 onRequestClose={fieldClose}>
                 <View style={styles.container}>
                     <Text style={styles.text}>
-                        Введите количество тонн. Вы можете добавить до 5 тонн.{'\n\n'}
-                        В заявке: {parseFloat(defaultValue).toFixed(1)} т.{'\n\n'}
-                        Максимальное количество: {parseFloat(parseFloat(defaultValue).toFixed(1)) + 5} т.
+                        Введите количество тонн, которое Вы хотите добавить. Вы
+                        можете добавить до 5 тонн.
+                        {'\n\n'}В заявке: {parseFloat(defaultValue).toFixed(1)}{' '}
+                        т.{'\n\n'}
+                        Максимальное количество:{' '}
+                        {parseFloat(parseFloat(defaultValue).toFixed(1)) + 5} т.
                     </Text>
                     <View style={styles.textInputContainer}>
                         <TextInput
@@ -46,6 +47,7 @@ export default class ChangeDataFieldInput extends Component {
                             keyboardType={'numeric'}
                             returnKeyType={'done'}
                             style={styles.textInput}
+                            maxLength={3}
                         />
                     </View>
                     <Button
