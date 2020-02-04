@@ -42,6 +42,8 @@ export default class ChangeDataFieldInput extends Component {
                     <View style={styles.textInputContainer}>
                         <TextInput
                             onChangeText={valueChange}
+                            placeholder={'4.5'}
+                            placeholderTextColor={APP_COLORS.DARK_GREY}
                             value={value}
                             autoFocus={true}
                             keyboardType={'numeric'}

@@ -27,7 +27,13 @@ export default class RequestCreate extends Component {
         };
     }
 
-    onChangeTonnage = tonnageToAdd => {
+    onChangeTonnage = tonnage => {
+        console.log(tonnage);
+        let tonnageToAdd = tonnage.split('');
+        console.log(tonnageToAdd);
+        if (tonnageToAdd.length === 1)
+        tonnageToAdd = tonnageToAdd.join('.');
+        console.log(tonnageToAdd);
         this.setState({tonnageToAdd});
     };
 
@@ -61,6 +67,7 @@ export default class RequestCreate extends Component {
                 setTonnageValue.status &&
                 setTonnageValue.status === 200
             ) {
+                this.setState({tonnageToAdd: ''});
                 this.getRequestData();
             }
         }
@@ -126,11 +133,11 @@ export default class RequestCreate extends Component {
     };
 
     renderModal = () => {
-        const {showInputField, tonnage, request} = this.state;
+        const {showInputField, tonnageToAdd, request} = this.state;
         return (
             <ChangeDataFieldInput
                 defaultValue={request.tonnage}
-                value={tonnage}
+                value={tonnageToAdd}
                 valueChange={this.onChangeTonnage}
                 valueSubmit={this.onChangeTonnageInRequest}
                 visibleField={showInputField}
