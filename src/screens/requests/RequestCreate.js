@@ -142,8 +142,8 @@ export default class RequestCreate extends Component {
 
     renderRow = params => (
         <TouchableOpacity
-            activeOpacity={0.1}
-            disabled={!params.pressAction}
+            activeOpacity={0.4}
+            disabled={!params.pressAction || params.disabled}
             onPress={params.pressAction}
             style={styles.rowContainer}>
             <View style={styles.rowTitleContainer}>
@@ -151,13 +151,18 @@ export default class RequestCreate extends Component {
             </View>
             <View style={styles.rowDataContainer}>
                 <Text style={styles.rowDataText}>{params.data}</Text>
-                {params.pressAction && (
+                {params.pressAction && !params.disabled && (
                     <Icon
                         style={{marginTop: scaleVertical(2)}}
                         name={'edit'}
                         size={20}
                         color={APP_COLORS.DARK_GREY}
                     />
+                )}
+                {params.pressAction && params.disabled && (
+                    <Text style={styles.rowDataNotification}>
+                        Талон использован
+                    </Text>
                 )}
             </View>
         </TouchableOpacity>
@@ -206,6 +211,7 @@ export default class RequestCreate extends Component {
                                         request.tonnage,
                                     ).toFixed(1)} т.`,
                                     pressAction: this.showInputField,
+                                    disabled: request.status,
                                 })}
                             {this.renderRow({
                                 title: 'Тип отходов',
@@ -270,6 +276,12 @@ const styles = StyleSheet.create({
         fontFamily: APP_FONTS.CERA_ROUND_PRO_BOLD,
         fontSize: scaleHorizontal(16),
         color: APP_COLORS.PRIMARY_BLACK,
+    },
+    rowDataNotification: {
+        alignSelf: 'flex-end',
+        fontFamily: APP_FONTS.CERA_ROUND_PRO_BOLD,
+        fontSize: scaleHorizontal(12),
+        color: APP_COLORS.RED,
     },
     transparentButton: {
         height: scaleVertical(30),
