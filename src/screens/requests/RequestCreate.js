@@ -20,17 +20,15 @@ export default class RequestCreate extends Component {
         super(props);
         const request = props.navigation.getParam('request');
         code = props.navigation.getParam('code');
-        const tonnage = props.navigation.getParam('tonnage');
         this.state = {
             showInputField: false,
-            tonnage: tonnage ? parseFloat(tonnage).toFixed(1) : null,
+            tonnageToAdd: '',
             request: request,
         };
     }
 
-    onChangeTonnage = tonnage => {
-        console.log(tonnage);
-        this.setState({tonnage});
+    onChangeTonnage = tonnageToAdd => {
+        this.setState({tonnageToAdd});
     };
 
     showInputField = () => {
@@ -42,22 +40,28 @@ export default class RequestCreate extends Component {
     };
 
     onChangeTonnageInRequest = async () => {
-        const {tonnage, request} = this.state;
-        if (
-            parseInt(request.tonnage) + 5 < parseInt(tonnage) ||
-            parseInt(tonnage) < parseInt(request.tonnage)
-        ) {
+        const {tonnageToAdd, request} = this.state;
+        if (parseInt(tonnageToAdd) < 0 || parseInt(tonnageToAdd) > 5) {
             alert(
                 'Вы не можете ввести такое количество тонн. Введите правильное количество.',
             );
         } else {
-            const setTonnageValue = await setRequestTonnageValue(code, tonnage);
+            const tonnage =
+                tonnageToAdd.length !== 0
+                    ? parseFloat(parseFloat(request.tonnage).toFixed(1)) +
+                      parseFloat(tonnageToAdd)
+                    : null;
+            console.log(tonnage);
+            const setTonnageValue = tonnage
+                ? await setRequestTonnageValue(code, tonnage.toString())
+                : null;
             console.log(setTonnageValue);
             if (
                 setTonnageValue &&
                 setTonnageValue.status &&
                 setTonnageValue.status === 200
             ) {
+                this.setState({tonnageToAdd: ''});
                 this.getRequestData();
             }
         }
@@ -123,11 +127,11 @@ export default class RequestCreate extends Component {
     };
 
     renderModal = () => {
-        const {showInputField, tonnage, request} = this.state;
+        const {showInputField, tonnageToAdd, request} = this.state;
         return (
             <ChangeDataFieldInput
                 defaultValue={request.tonnage}
-                value={tonnage}
+                value={tonnageToAdd}
                 valueChange={this.onChangeTonnage}
                 valueSubmit={this.onChangeTonnageInRequest}
                 visibleField={showInputField}
@@ -138,8 +142,8 @@ export default class RequestCreate extends Component {
 
     renderRow = params => (
         <TouchableOpacity
-            activeOpacity={0.1}
-            disabled={!params.pressAction}
+            activeOpacity={0.4}
+            disabled={!params.pressAction || params.disabled}
             onPress={params.pressAction}
             style={styles.rowContainer}>
             <View style={styles.rowTitleContainer}>
@@ -147,13 +151,18 @@ export default class RequestCreate extends Component {
             </View>
             <View style={styles.rowDataContainer}>
                 <Text style={styles.rowDataText}>{params.data}</Text>
-                {params.pressAction && (
+                {params.pressAction && !params.disabled && (
                     <Icon
                         style={{marginTop: scaleVertical(2)}}
                         name={'edit'}
                         size={20}
                         color={APP_COLORS.DARK_GREY}
                     />
+                )}
+                {params.pressAction && params.disabled && (
+                    <Text style={styles.rowDataNotification}>
+                        Талон использован
+                    </Text>
                 )}
             </View>
         </TouchableOpacity>
@@ -202,6 +211,7 @@ export default class RequestCreate extends Component {
                                         request.tonnage,
                                     ).toFixed(1)} т.`,
                                     pressAction: this.showInputField,
+                                    disabled: request.status,
                                 })}
                             {this.renderRow({
                                 title: 'Тип отходов',
@@ -266,6 +276,12 @@ const styles = StyleSheet.create({
         fontFamily: APP_FONTS.CERA_ROUND_PRO_BOLD,
         fontSize: scaleHorizontal(16),
         color: APP_COLORS.PRIMARY_BLACK,
+    },
+    rowDataNotification: {
+        alignSelf: 'flex-end',
+        fontFamily: APP_FONTS.CERA_ROUND_PRO_BOLD,
+        fontSize: scaleHorizontal(12),
+        color: APP_COLORS.RED,
     },
     transparentButton: {
         height: scaleVertical(30),
