@@ -27,13 +27,7 @@ export default class RequestCreate extends Component {
         };
     }
 
-    onChangeTonnage = tonnage => {
-        console.log(tonnage);
-        let tonnageToAdd = tonnage.split('');
-        console.log(tonnageToAdd);
-        if (tonnageToAdd.length === 1)
-        tonnageToAdd = tonnageToAdd.join('.');
-        console.log(tonnageToAdd);
+    onChangeTonnage = tonnageToAdd => {
         this.setState({tonnageToAdd});
     };
 
