@@ -103,29 +103,6 @@ export default class RequestCreate extends Component {
         }
     };
 
-    // onCancelRequestButtonPress = async code => {
-    //     console.log('cancelButton pressed');
-    //     const cancelRequestButtonResponse = await setRequestStatus(
-    //         code,
-    //         'unused',
-    //     );
-    //     console.log(cancelRequestButtonResponse);
-    //     if (cancelRequestButtonResponse && cancelRequestButtonResponse.status) {
-    //         if (cancelRequestButtonResponse.status === 200) {
-    //             alert('Талон отменен диспетчером');
-    //             const resetAction = StackActions.reset({
-    //                 index: 0,
-    //                 actions: [
-    //                     NavigationActions.navigate({
-    //                         routeName: 'AppStack',
-    //                     }),
-    //                 ],
-    //             });
-    //             this.props.navigation.dispatch(resetAction);
-    //         }
-    //     }
-    // };
-
     renderModal = () => {
         const {showInputField, tonnageToAdd, request} = this.state;
         return (
@@ -222,17 +199,10 @@ export default class RequestCreate extends Component {
                 </View>
                 <View style={styles.footerContainer}>
                     {!request.status && (
-                            {/*<TransparentButton*/}
-                            {/*    onPress={() =>*/}
-                            {/*        this.onCancelRequestButtonPress(code)*/}
-                            {/*    }*/}
-                            {/*    text={'Отменить талон'}*/}
-                            {/*    style={styles.transparentButton}*/}
-                            {/*/>*/}
-                            <Button
-                                onPress={this.onConfirmRequestButtonPress}
-                                text={'Подтвердить'}
-                            />
+                        <Button
+                            onPress={this.onConfirmRequestButtonPress}
+                            text={'Подтвердить'}
+                        />
                     )}
                     {request.status && (
                         <Text style={styles.rowDataText}>
@@ -250,7 +220,6 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         flexDirection: 'column',
-        // paddingVertical: scaleVertical(40),
         paddingHorizontal: scaleHorizontal(25),
         justifyContent: 'space-between',
         alignItems: 'center',
@@ -302,7 +271,6 @@ const styles = StyleSheet.create({
         position: 'absolute',
         bottom: 0,
         height: '15%',
-        // height: '30%',
         width: '100%',
         flexDirection: 'column',
         justifyContent: 'center',
