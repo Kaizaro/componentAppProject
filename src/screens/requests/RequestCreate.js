@@ -206,7 +206,7 @@ export default class RequestCreate extends Component {
                     )}
                     {request.status && (
                         <Text style={styles.rowDataText}>
-                            Талон уже подтвержден
+                            Талон уже использован
                         </Text>
                     )}
                 </View>
