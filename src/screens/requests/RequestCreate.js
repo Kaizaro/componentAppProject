@@ -221,15 +221,28 @@ export default class RequestCreate extends Component {
                     )}
                 </View>
                 <View style={styles.footerContainer}>
-                    <TransparentButton
-                        onPress={() => this.onCancelRequestButtonPress(code)}
-                        text={'Отменить талон'}
-                        style={styles.transparentButton}
-                    />
-                    <Button
-                        onPress={() => this.onConfirmRequestButtonPress(code)}
-                        text={'Подтвердить'}
-                    />
+                    {!request.status && (
+                        <Fragment>
+                            {/*<TransparentButton*/}
+                            {/*    onPress={() =>*/}
+                            {/*        this.onCancelRequestButtonPress(code)*/}
+                            {/*    }*/}
+                            {/*    text={'Отменить талон'}*/}
+                            {/*    style={styles.transparentButton}*/}
+                            {/*/>*/}
+                            <Button
+                                onPress={() =>
+                                    this.onConfirmRequestButtonPress(code)
+                                }
+                                text={'Подтвердить'}
+                            />
+                        </Fragment>
+                    )}
+                    {request.status && (
+                        <Text style={styles.rowDataText}>
+                            Талон уже подтвержден
+                        </Text>
+                    )}
                 </View>
                 {this.renderModal()}
             </View>
@@ -292,7 +305,8 @@ const styles = StyleSheet.create({
     footerContainer: {
         position: 'absolute',
         bottom: 0,
-        height: '30%',
+        height: '15%',
+        // height: '30%',
         width: '100%',
         flexDirection: 'column',
         justifyContent: 'center',
