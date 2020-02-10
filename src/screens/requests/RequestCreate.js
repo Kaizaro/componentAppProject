@@ -77,7 +77,7 @@ export default class RequestCreate extends Component {
         }
     };
 
-    onConfirmRequestButtonPress = async code => {
+    onConfirmRequestButtonPress = async () => {
         console.log('confirmRequestButtonPressed');
         const confirmRequestButtonResponse = await setRequestStatus(
             code,
@@ -103,28 +103,28 @@ export default class RequestCreate extends Component {
         }
     };
 
-    onCancelRequestButtonPress = async code => {
-        console.log('cancelButton pressed');
-        const cancelRequestButtonResponse = await setRequestStatus(
-            code,
-            'unused',
-        );
-        console.log(cancelRequestButtonResponse);
-        if (cancelRequestButtonResponse && cancelRequestButtonResponse.status) {
-            if (cancelRequestButtonResponse.status === 200) {
-                alert('Талон отменен диспетчером');
-                const resetAction = StackActions.reset({
-                    index: 0,
-                    actions: [
-                        NavigationActions.navigate({
-                            routeName: 'AppStack',
-                        }),
-                    ],
-                });
-                this.props.navigation.dispatch(resetAction);
-            }
-        }
-    };
+    // onCancelRequestButtonPress = async code => {
+    //     console.log('cancelButton pressed');
+    //     const cancelRequestButtonResponse = await setRequestStatus(
+    //         code,
+    //         'unused',
+    //     );
+    //     console.log(cancelRequestButtonResponse);
+    //     if (cancelRequestButtonResponse && cancelRequestButtonResponse.status) {
+    //         if (cancelRequestButtonResponse.status === 200) {
+    //             alert('Талон отменен диспетчером');
+    //             const resetAction = StackActions.reset({
+    //                 index: 0,
+    //                 actions: [
+    //                     NavigationActions.navigate({
+    //                         routeName: 'AppStack',
+    //                     }),
+    //                 ],
+    //             });
+    //             this.props.navigation.dispatch(resetAction);
+    //         }
+    //     }
+    // };
 
     renderModal = () => {
         const {showInputField, tonnageToAdd, request} = this.state;
@@ -222,7 +222,6 @@ export default class RequestCreate extends Component {
                 </View>
                 <View style={styles.footerContainer}>
                     {!request.status && (
-                        <Fragment>
                             {/*<TransparentButton*/}
                             {/*    onPress={() =>*/}
                             {/*        this.onCancelRequestButtonPress(code)*/}
@@ -231,12 +230,9 @@ export default class RequestCreate extends Component {
                             {/*    style={styles.transparentButton}*/}
                             {/*/>*/}
                             <Button
-                                onPress={() =>
-                                    this.onConfirmRequestButtonPress(code)
-                                }
+                                onPress={this.onConfirmRequestButtonPress}
                                 text={'Подтвердить'}
                             />
-                        </Fragment>
                     )}
                     {request.status && (
                         <Text style={styles.rowDataText}>
