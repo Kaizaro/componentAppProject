@@ -32,33 +32,47 @@ class RequestsList extends Component {
             scanRequests.status === 200 &&
             scanRequests.data
         ) {
+            let date;
             let filteredRequests = [];
+            scanRequests.data.sort((a, b) => {
+                return b.dateScan - a.dateScan;
+            });
+            console.log(scanRequests);
             scanRequests.data.map(scanRequest => {
-                console.log(scanRequest);
-                console.log('filteredRequests', filteredRequests);
                 if (filteredRequests.length === 0) {
+                    date = this.getDate(scanRequest.dateScan);
                     filteredRequests.push({
                         date: this.getDate(scanRequest.dateScan),
                         data: [scanRequest],
                     });
                 } else {
-                    filteredRequests.map(filteredRequest => {
-                        console.log(filteredRequest);
-                        if (
-                            filteredRequest.date ===
-                            this.getDate(scanRequest.dateScan)
-                        ) {
-                            filteredRequest.data.push(scanRequest);
-                        } else {
-                            filteredRequests.push({
-                                date: this.getDate(scanRequest.dateScan),
-                                data: [scanRequest],
-                            });
+                    console.log('date', date);
+                    if (this.getDate(scanRequest.dateScan) === date) {
+                        console.log(this.getDate(scanRequest.dateScan));
+                        console.log(date);
+                        const index = filteredRequests.findIndex(
+                            x => x.date === this.getDate(scanRequest.dateScan),
+                        );
+                        console.log('index on filteredIndex', filteredRequests);
+                        console.log(index);
+                        if (index !== -1) {
+                            filteredRequests[index].data.push(scanRequest);
                         }
-                    });
+                    } else {
+                        console.log(
+                            'else/else',
+                            this.getDate(scanRequest.dateScan),
+                        );
+                        date = this.getDate(scanRequest.dateScan);
+                        console.log('changed date', date);
+                        filteredRequests.push({
+                            date: this.getDate(scanRequest.dateScan),
+                            data: [scanRequest],
+                        });
+                    }
                 }
             });
-            console.log('in end of logic', filteredRequests);
+            console.log(filteredRequests);
             this.setState({requests: filteredRequests});
         }
     };
