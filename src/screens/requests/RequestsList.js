@@ -23,9 +23,7 @@ class RequestsList extends Component {
     };
 
     componentDidMount = async () => {
-        console.log('here');
         const scanRequests = await getScanHistory();
-        console.log(scanRequests);
         if (
             scanRequests &&
             scanRequests.status &&
@@ -37,7 +35,6 @@ class RequestsList extends Component {
             scanRequests.data.sort((a, b) => {
                 return b.dateScan - a.dateScan;
             });
-            console.log(scanRequests);
             scanRequests.data.map(scanRequest => {
                 if (filteredRequests.length === 0) {
                     date = this.getDate(scanRequest.dateScan);
@@ -46,25 +43,15 @@ class RequestsList extends Component {
                         data: [scanRequest],
                     });
                 } else {
-                    console.log('date', date);
                     if (this.getDate(scanRequest.dateScan) === date) {
-                        console.log(this.getDate(scanRequest.dateScan));
-                        console.log(date);
                         const index = filteredRequests.findIndex(
                             x => x.date === this.getDate(scanRequest.dateScan),
                         );
-                        console.log('index on filteredIndex', filteredRequests);
-                        console.log(index);
                         if (index !== -1) {
                             filteredRequests[index].data.push(scanRequest);
                         }
                     } else {
-                        console.log(
-                            'else/else',
-                            this.getDate(scanRequest.dateScan),
-                        );
                         date = this.getDate(scanRequest.dateScan);
-                        console.log('changed date', date);
                         filteredRequests.push({
                             date: this.getDate(scanRequest.dateScan),
                             data: [scanRequest],
@@ -72,7 +59,6 @@ class RequestsList extends Component {
                     }
                 }
             });
-            console.log(filteredRequests);
             this.setState({requests: filteredRequests});
         }
     };
@@ -95,16 +81,41 @@ class RequestsList extends Component {
         });
     };
 
-    filterRequestGroup = (type, requests) => {
-        console.log('requestGroup', type, requests);
+    filterRequestGroup = requests => {
+        console.log('requestGroup', requests);
+        // const arr = requests.filter(item => type === item.typeWaste);
         let arr = [];
-        requests.map(item => {
-            console.log(item);
-            if (type === item.typeWaste) {
-                arr.push(item);
+        let type;
+        requests.map(request => {
+            console.log(request);
+            if (arr.length === 0) {
+                type = request.typeWaste;
+                arr.push({
+                    group: request.typeWaste,
+                    data: [request],
+                });
+            } else {
+                console.log(request.typeWaste);
+                if (request.typeWaste === type) {
+                    console.log('here', type, request);
+                    console.log(arr);
+                    const index = arr.findIndex(
+                        x => x.group === request.typeWaste,
+                    );
+                    console.log(index);
+                    if (index !== -1) {
+                        arr[index].data.push(request);
+                    }
+                } else {
+                    type = request.typeWaste;
+                    arr.push({
+                        group: request.typeWaste,
+                        data: [request],
+                    });
+                }
             }
         });
-        console.log(arr);
+        console.log('final', arr);
         return arr;
     };
 
@@ -118,16 +129,18 @@ class RequestsList extends Component {
 
     renderItem = ({item, index}) => {
         console.log('item', item, index);
+        let group = this.filterRequestGroup(item.data);
+        console.log('group in renderItem', group);
         return (
             <View style={styles.blockContainer}>
                 {this.renderDate(item.date, item.data.length)}
-                {item.data.map(requestGroups => {
-                    console.log(requestGroups);
+                {group.map(requestGroup => {
+                    console.log('request group', requestGroup);
                     return this.renderRequestGroups(
-                        requestGroups,
-                        item.data,
+                        requestGroup.group,
+                        requestGroup.data.length,
+                        requestGroup.data,
                         item.date,
-                        item.data.length,
                     );
                 })}
             </View>
@@ -142,33 +155,18 @@ class RequestsList extends Component {
         </View>
     );
 
-    renderRequestGroups = (requestGroup, requests, date, dataLength) => {
-        console.log(requestGroup);
-        let group = this.filterRequestGroup(requestGroup.typeWaste, requests);
-        console.log(group);
-        return (
-            <TouchableOpacity
-                onPress={() => this.onItemPress(group, date, dataLength)}
-                style={styles.dataContainer}>
-                {group && (
-                    <Text style={styles.dataText}>
-                        {requestGroup.typeWaste},{' '}
-                        {requestGroup.tonnage
-                            ? `${parseFloat(requestGroup.tonnage).toFixed(
-                                  1,
-                              )} т.`
-                            : ''}
-                        {requestGroup.volume
-                            ? `, ${parseFloat(requestGroup.volume).toFixed(
-                                  1,
-                              )} м3.`
-                            : ''}{' '}
-                        - {group.length} шт.
-                    </Text>
-                )}
-            </TouchableOpacity>
-        );
-    };
+    renderRequestGroups = (group, amount, data, date) => (
+        <TouchableOpacity
+            activeOpacity={0.4}
+            onPress={() => this.onItemPress(data, date, amount)}
+            style={styles.dataContainer}>
+            {group && (
+                <Text style={styles.dataText}>
+                    {group} - {amount} шт.
+                </Text>
+            )}
+        </TouchableOpacity>
+    );
 
     render() {
         const {requests} = this.state;
@@ -230,12 +228,12 @@ const styles = StyleSheet.create({
     },
     dataContainer: {
         width: '100%',
+        paddingVertical: scaleVertical(5),
         flexDirection: 'column',
         justifyContent: 'flex-start',
         alignItems: 'flex-start',
     },
     dataText: {
-        marginTop: scaleVertical(10),
         fontFamily: APP_FONTS.CERA_ROUND_PRO_BOLD,
         fontSize: scaleHorizontal(16),
         color: APP_COLORS.PRIMARY_BLACK,

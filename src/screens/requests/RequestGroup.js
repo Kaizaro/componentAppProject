@@ -20,12 +20,9 @@ export default class RequestGroup extends Component {
     };
 
     renderItem = ({item, index}) => {
-        const date = this.props.navigation.getParam('date');
-        const dataLength = this.props.navigation.getParam('dataLength');
         console.log('item', item, index);
         return (
             <View style={styles.blockContainer}>
-                {this.renderDate(date, dataLength)}
                 <TouchableOpacity
                     onPress={() => this.onItemPress(item)}
                     style={styles.dataContainer}>
@@ -53,9 +50,12 @@ export default class RequestGroup extends Component {
 
     render() {
         const group = this.props.navigation.getParam('group');
+        const date = this.props.navigation.getParam('date');
+        const dataLength = this.props.navigation.getParam('dataLength');
         console.log(group);
         return (
             <View style={styles.container}>
+                {this.renderDate(date, dataLength)}
                 {group && (
                     <FlatList
                         data={group}
@@ -76,7 +76,7 @@ const styles = StyleSheet.create({
         flex: 1,
         flexDirection: 'column',
         paddingHorizontal: scaleHorizontal(20),
-        paddingBottom: scaleVertical(20),
+        paddingVertical: scaleVertical(20),
     },
     blockContainer: {
         width: '100%',
@@ -98,12 +98,12 @@ const styles = StyleSheet.create({
     },
     dataContainer: {
         width: '100%',
+        paddingVertical: scaleVertical(5),
         flexDirection: 'column',
         justifyContent: 'flex-start',
         alignItems: 'flex-start',
     },
     dataText: {
-        marginTop: scaleVertical(10),
         fontFamily: APP_FONTS.CERA_ROUND_PRO_BOLD,
         fontSize: scaleHorizontal(16),
         color: APP_COLORS.PRIMARY_BLACK,
