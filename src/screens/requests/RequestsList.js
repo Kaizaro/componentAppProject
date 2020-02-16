@@ -175,15 +175,21 @@ class RequestsList extends Component {
         return (
             <View style={styles.container}>
                 {requests && (
-                    <FlatList
-                        keyExtractor={requests.date}
-                        data={requests}
-                        renderItem={this.renderItem}
-                        ListEmptyComponent={this.renderEmptyList}
-                        style={{flex: 1}}
-                        bounces={false}
-                        initialNumToRender={1}
-                    />
+                    <View
+                        style={{
+                            width: '100%',
+                            height: '85%',
+                        }}>
+                        <FlatList
+                            keyExtractor={key => key.date}
+                            data={requests}
+                            renderItem={this.renderItem}
+                            ListEmptyComponent={this.renderEmptyList}
+                            style={{flex: 1}}
+                            bounces={false}
+                            initialNumToRender={1}
+                        />
+                    </View>
                 )}
                 <Button
                     onPress={this.onButtonPress}
