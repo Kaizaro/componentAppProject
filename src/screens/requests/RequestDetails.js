@@ -41,6 +41,7 @@ export default class RequestDetails extends Component {
                 comment: '',
                 messageModalVisible: false,
             });
+            alert('Проблема добавлена и передана менеджеру');
             this.props.navigation.goBack();
         }
     };
@@ -96,7 +97,7 @@ export default class RequestDetails extends Component {
                                 style={{
                                     fontFamily: APP_FONTS.CERA_ROUND_PRO_BOLD,
                                     fontSize: scaleHorizontal(14),
-                                    color: APP_COLORS.LIGHT_GRAY,
+                                    color: APP_COLORS.DARK_GREY,
                                     textAlign: 'right',
                                 }}>
                                 {`${this.state.comment.length}/500`}
