@@ -2,6 +2,7 @@ import React, {Component} from 'react';
 import {
     Dimensions,
     FlatList,
+    ScrollView,
     StyleSheet,
     Text,
     TouchableOpacity,
@@ -14,12 +15,16 @@ import {clearToken} from '../../store/actions/authActions';
 import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
 import {getScanHistory} from '../../api/Requests';
+import TransparentButton from '../../components/TransparentButton';
 
 const {width} = Dimensions.get('window');
 
 class RequestsList extends Component {
+    flatlist;
     state = {
         requests: null,
+        requestDates: null,
+        showRequestDateWindow: false,
     };
 
     componentDidMount = async () => {
@@ -72,8 +77,6 @@ class RequestsList extends Component {
     };
 
     onItemPress = (item, date, dataLength) => {
-        console.log('onItemPress');
-        console.log(item);
         this.props.navigation.navigate('RequestGroup', {
             group: item,
             date,
@@ -82,12 +85,9 @@ class RequestsList extends Component {
     };
 
     filterRequestGroup = requests => {
-        console.log('requestGroup', requests);
-        // const arr = requests.filter(item => type === item.typeWaste);
         let arr = [];
         let type;
         requests.map(request => {
-            console.log(request);
             if (arr.length === 0) {
                 type = request.typeWaste;
                 arr.push({
@@ -95,14 +95,10 @@ class RequestsList extends Component {
                     data: [request],
                 });
             } else {
-                console.log(request.typeWaste);
                 if (request.typeWaste === type) {
-                    console.log('here', type, request);
-                    console.log(arr);
                     const index = arr.findIndex(
                         x => x.group === request.typeWaste,
                     );
-                    console.log(index);
                     if (index !== -1) {
                         arr[index].data.push(request);
                     }
@@ -115,27 +111,77 @@ class RequestsList extends Component {
                 }
             }
         });
-        console.log('final', arr);
         return arr;
     };
 
-    onButtonPress = () => {
+    onScanButtonPress = () => {
         this.props.navigation.navigate('ScanQRCodeScanner');
     };
 
-    renderEmptyList = () => {
-        console.log('EMPTY LIST');
+    onChooseDateButtonPress = () => {
+        const {requests} = this.state;
+        console.log(requests);
+        let requestDates = [];
+        requests.map(request => {
+            console.log(request);
+            requestDates.push(request.date);
+        });
+        console.log(requestDates);
+        this.setState({
+            requestDates,
+            showRequestDateWindow: true,
+        });
     };
 
+    onDateInDateListPress = date => {
+        console.log(date);
+        console.log(this.flatlist);
+        const index = this.state.requests.findIndex(x => x.date === date);
+        console.log(index);
+        if (index !== -1) {
+            this.setState({showRequestDateWindow: false}, () =>
+                this.flatlist.scrollToIndex({index}),
+            );
+        }
+    };
+
+    renderDateList = () => (
+        <View style={styles.backgroundContainer}>
+            <View style={styles.dateListContainer}>
+                <Text style={styles.nameText}>Выберите дату</Text>
+                {this.state.requestDates && (
+                    <ScrollView>
+                        {this.state.requestDates.map(requestDate => {
+                            return (
+                                <TouchableOpacity
+                                    onPress={() =>
+                                        this.onDateInDateListPress(requestDate)
+                                    }
+                                    style={styles.dataContainer}>
+                                    <Text style={styles.dateText}>
+                                        {requestDate}
+                                    </Text>
+                                </TouchableOpacity>
+                            );
+                        })}
+                    </ScrollView>
+                )}
+            </View>
+        </View>
+    );
+
+    renderEmptyList = () => (
+        <View>
+            <Text>Список заказов пуст</Text>
+        </View>
+    );
+
     renderItem = ({item, index}) => {
-        console.log('item', item, index);
         let group = this.filterRequestGroup(item.data);
-        console.log('group in renderItem', group);
         return (
             <View style={styles.blockContainer}>
                 {this.renderDate(item.date, item.data.length)}
                 {group.map(requestGroup => {
-                    console.log('request group', requestGroup);
                     return this.renderRequestGroups(
                         requestGroup.group,
                         requestGroup.data.length,
@@ -169,16 +215,17 @@ class RequestsList extends Component {
     );
 
     render() {
-        const {requests} = this.state;
+        const {requests, showRequestDateWindow} = this.state;
         return (
             <View style={styles.container}>
                 {requests && (
                     <View
                         style={{
                             width: '100%',
-                            height: '85%',
+                            height: '75%',
                         }}>
                         <FlatList
+                            ref={c => (this.flatlist = c)}
                             keyExtractor={key => key.date}
                             data={requests}
                             renderItem={this.renderItem}
@@ -189,11 +236,20 @@ class RequestsList extends Component {
                         />
                     </View>
                 )}
-                <Button
-                    onPress={this.onButtonPress}
-                    style={styles.buttonContainer}
-                    text={'Сканировать'}
-                />
+                {showRequestDateWindow && this.renderDateList()}
+                {!showRequestDateWindow && (
+                    <View style={styles.footerContainer}>
+                        <Button
+                            onPress={this.onScanButtonPress}
+                            text={'Сканировать'}
+                        />
+                        <TransparentButton
+                            onPress={this.onChooseDateButtonPress}
+                            style={styles.transparentButton}
+                            text={'Выбрать дату'}
+                        />
+                    </View>
+                )}
             </View>
         );
     }
@@ -251,11 +307,44 @@ const styles = StyleSheet.create({
         justifyContent: 'space-between',
         alignItems: 'center',
     },
-    buttonContainer: {
+    footerContainer: {
         position: 'absolute',
-        bottom: scaleVertical(20),
-        alignSelf: 'center',
+        bottom: 0,
+        height: '15%',
+        width: width,
+        flexDirection: 'column',
+        justifyContent: 'center',
+        alignItems: 'center',
     },
+    transparentButton: {
+        marginBottom: scaleVertical(40),
+    },
+    backgroundContainer: {
+        position: 'absolute',
+        top: 0,
+        bottom: 0,
+        right: 0,
+        left: 0,
+        backgroundColor: '#32323290',
+        justifyContent: 'center',
+        alignItems: 'center',
+        paddingHorizontal: scaleHorizontal(30),
+        paddingVertical: scaleVertical(30),
+    },
+    dateListContainer: {
+        width: '100%',
+        paddingHorizontal: scaleHorizontal(30),
+        paddingVertical: scaleVertical(30),
+        backgroundColor: 'white',
+        justifyContent: 'center',
+        alignItems: 'center',
+        borderRadius: 10,
+    },
+    // buttonContainer: {
+    //     position: 'absolute',
+    //     bottom: scaleVertical(20),
+    //     alignSelf: 'center',
+    // },
 });
 
 const mapStateToProps = state => ({
