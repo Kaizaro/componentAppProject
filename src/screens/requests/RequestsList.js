@@ -65,6 +65,9 @@ class RequestsList extends Component {
                 }
             });
             this.setState({requests: filteredRequests});
+            this.props.navigation.setParams({
+                onChooseButtonPress: this.onChooseDateButtonPress,
+            });
         }
     };
 
@@ -222,7 +225,7 @@ class RequestsList extends Component {
                     <View
                         style={{
                             width: '100%',
-                            height: '75%',
+                            height: '85%',
                         }}>
                         <FlatList
                             ref={c => (this.flatlist = c)}
@@ -238,17 +241,11 @@ class RequestsList extends Component {
                 )}
                 {showRequestDateWindow && this.renderDateList()}
                 {!showRequestDateWindow && (
-                    <View style={styles.footerContainer}>
-                        <Button
-                            onPress={this.onScanButtonPress}
-                            text={'Сканировать'}
-                        />
-                        <TransparentButton
-                            onPress={this.onChooseDateButtonPress}
-                            style={styles.transparentButton}
-                            text={'Выбрать дату'}
-                        />
-                    </View>
+                    <Button
+                        style={styles.buttonContainer}
+                        onPress={this.onScanButtonPress}
+                        text={'Сканировать'}
+                    />
                 )}
             </View>
         );
@@ -340,11 +337,11 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         borderRadius: 10,
     },
-    // buttonContainer: {
-    //     position: 'absolute',
-    //     bottom: scaleVertical(20),
-    //     alignSelf: 'center',
-    // },
+    buttonContainer: {
+        position: 'absolute',
+        bottom: scaleVertical(20),
+        alignSelf: 'center',
+    },
 });
 
 const mapStateToProps = state => ({
