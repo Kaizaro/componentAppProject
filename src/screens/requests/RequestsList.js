@@ -281,7 +281,7 @@ const styles = StyleSheet.create({
     },
     dataContainer: {
         width: '100%',
-        paddingVertical: scaleVertical(5),
+        paddingVertical: scaleVertical(10),
         flexDirection: 'column',
         justifyContent: 'flex-start',
         alignItems: 'flex-start',
