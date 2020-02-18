@@ -72,7 +72,6 @@ class LoginScreen extends React.Component {
                     actions: [
                         NavigationActions.navigate({
                             routeName: 'AppStack',
-                            dateChangeButton: '',
                         }),
                     ],
                 });
