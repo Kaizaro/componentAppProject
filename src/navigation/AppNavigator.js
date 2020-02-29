@@ -12,6 +12,7 @@ import BackButton from './BackButton';
 import RequestError from '../screens/requests/RequestError';
 import RequestDetails from "../screens/requests/RequestDetails";
 import RequestGroup from "../screens/requests/RequestGroup";
+import SettingsButton from "./SettingsButton";
 
 const AuthStack = createStackNavigator(
     {
@@ -44,7 +45,7 @@ const AppStack = createStackNavigator(
                 headerTitle: () => (
                     <ScreenTitle title={'История сканирований'} />
                 ),
-                headerLeft: () => null,
+                headerLeft: () => <SettingsButton navigation={navigation} />,
                 headerRight: () => <LogoutButton navigation={navigation} />,
             }),
         },
