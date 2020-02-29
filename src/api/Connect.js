@@ -1,7 +1,7 @@
 import axios from 'axios';
 import store from '../store/configureStore';
 
-const baseUrl = 'https://test.moveup.pw/api/';
+const baseUrl = 'https://komponent-app.ru/api/';
 
 export const authUser = async params => {
     try {
