@@ -7,6 +7,7 @@ import {APP_COLORS, APP_FONTS} from '../../Styles';
 import TransparentButton from '../../components/TransparentButton';
 import Button from '../../components/Button';
 import {getCodeState} from '../../api/Requests';
+import {NavigationActions, StackActions} from "react-navigation";
 
 export default class ScanQRCodeScreen extends Component {
     state = {
@@ -52,8 +53,35 @@ export default class ScanQRCodeScreen extends Component {
                     code,
                     tonnage: codeState.data.tonnage,
                 });
+                // const resetAction = StackActions.reset({
+                //     index: 1,
+                //     actions: [
+                //         NavigationActions.navigate({
+                //             routeName: 'AppStack',
+                //             action: NavigationActions.navigate({
+                //                 routeName: 'RequestCreate',
+                //                 params: {
+                //                     request: codeState.data,
+                //                     code,
+                //                     tonnage: codeState.data.tonnage,
+                //                 },
+                //             }),
+                //         }),
+                //     ],
+                // });
+                // this.props.navigation.dispatch(resetAction);
             } else {
                 this.props.navigation.navigate('RequestError');
+                // const resetAction = StackActions.reset({
+                //     index: 1,
+                //     actions: [
+                //         NavigationActions.navigate({
+                //             routeName: 'AppStack',
+                //             action: NavigationActions.navigate('RequestError'),
+                //         }),
+                //     ],
+                // });
+                // this.props.navigation.dispatch(resetAction);
             }
         }
     };
@@ -66,8 +94,8 @@ export default class ScanQRCodeScreen extends Component {
     renderQRCodeScanner = () => (
         <QRCodeScanner
             onRead={this.readQRCodeSuccess}
-            reactivate={true}
-            reactivateTimeout={5000}
+            reactivate={false}
+            // reactivateTimeout={5000}
             cameraStyle={styles.cameraContainer}
             showMarker={true}
         />
