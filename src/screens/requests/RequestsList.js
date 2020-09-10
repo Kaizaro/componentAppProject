@@ -122,18 +122,25 @@ class RequestsList extends Component {
     };
 
     onChooseDateButtonPress = () => {
-        const {requests} = this.state;
-        console.log(requests);
-        let requestDates = [];
-        requests.map(request => {
-            console.log(request);
-            requestDates.push(request.date);
-        });
-        console.log(requestDates);
-        this.setState({
-            requestDates,
-            showRequestDateWindow: true,
-        });
+        if (!this.state.showRequestDateWindow) {
+            const {requests} = this.state;
+            console.log(requests);
+            let requestDates = [];
+            requests.map(request => {
+                console.log(request);
+                requestDates.push(request.date);
+            });
+            console.log(requestDates);
+            this.setState({
+                requestDates,
+                showRequestDateWindow: true,
+            });
+        } else {
+            this.setState({
+                requestDates: null,
+                showRequestDateWindow: false,
+            });
+        }
     };
 
     onDateInDateListPress = date => {
@@ -175,7 +182,7 @@ class RequestsList extends Component {
 
     renderEmptyList = () => (
         <View>
-            <Text>Список заказов пуст</Text>
+            <Text style={styles.dataText}>Список заказов пуст</Text>
         </View>
     );
 
