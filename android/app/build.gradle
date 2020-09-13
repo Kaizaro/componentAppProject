@@ -185,6 +185,16 @@ android {
 
         }
     }
+
+    android.applicationVariants.all { variant ->
+        variant.outputs.all { output ->
+            def architecture = output.getFilter(com.android.build.OutputFile.ABI)
+            if (architecture == null) {
+                architecture = 'UNIVERSAL'
+            }
+            outputFileName = "Komponent-${variant.versionName}--${variant.versionCode}-${variant.name}.apk"
+        }
+    }
 }
 
 dependencies {

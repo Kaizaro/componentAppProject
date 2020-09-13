@@ -32,6 +32,7 @@ export const getRequest = async params => {
             headers: {
                 'Authorization-Token': `FakeiRu2:${token}`,
             },
+            data: params.data,
         });
         console.log(response);
         return response;

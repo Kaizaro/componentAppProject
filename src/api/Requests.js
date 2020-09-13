@@ -7,9 +7,9 @@ export const getCodeState = async code => {
     });
 };
 
-export const getScanHistory = async () => {
+export const getScanHistory = async (page: number = 1) => {
     return await getRequest({
-        request: 'coupon/list',
+        request: `v2/coupons/?page=${page}`,
     });
 };
 
