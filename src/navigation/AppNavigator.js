@@ -45,7 +45,7 @@ const AppStack = createStackNavigator(
                 headerTitle: () => (
                     <ScreenTitle title={'История сканирований'} />
                 ),
-                headerLeft: () => <SettingsButton navigation={navigation} />,
+                // headerLeft: () => <SettingsButton navigation={navigation} />,
                 headerRight: () => <LogoutButton navigation={navigation} />,
             }),
         },

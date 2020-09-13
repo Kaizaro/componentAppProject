@@ -1,6 +1,6 @@
 import React, {PureComponent} from 'react';
 import {StyleSheet, Text, TouchableOpacity} from 'react-native';
-import {scaleHorizontal} from '../lib/util';
+import {scaleHorizontal, scaleVertical} from '../lib/util';
 import {APP_COLORS, APP_FONTS} from '../Styles';
 
 export default class TransparentButton extends PureComponent {
@@ -31,8 +31,8 @@ export default class TransparentButton extends PureComponent {
 
 const styles = StyleSheet.create({
     container: {
-        width: '50%',
-        height: '100%',
+        width: scaleHorizontal(225),
+        height: scaleVertical(60),
         justifyContent: 'center',
         alignItems: 'center',
     },
