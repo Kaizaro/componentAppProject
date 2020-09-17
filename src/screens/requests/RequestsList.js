@@ -1,5 +1,6 @@
 import React, {Component} from 'react';
 import {
+    Alert,
     Dimensions,
     FlatList,
     ScrollView,
@@ -24,7 +25,7 @@ type TScanRequest = {
 };
 
 type TData = {
-    next: number,
+    next: number | boolean,
     max: number,
     total: number,
     result: TResult[],
@@ -51,24 +52,26 @@ type TState = {
     requestDates: any,
     showRequestDateWindow: boolean,
     requestsListInfo: ?{
-        next: number,
+        next: number | boolean,
         max: number,
         total: number,
         result: TResult[],
     },
     currentPage: number,
+    pageLoading: boolean,
 };
 
 const {width} = Dimensions.get('window');
 
 class RequestsList extends Component<TState> {
     flatlist;
-    state = {
+    state: TState = {
         requests: null,
         requestDates: null,
         showRequestDateWindow: false,
         requestsListInfo: null,
         currentPage: 1,
+        pageLoading: true,
     };
 
     componentDidMount = async () => {
@@ -129,6 +132,9 @@ class RequestsList extends Component<TState> {
     }
 
     getScanHistoryMethod = async () => {
+        this.setState({
+            pageLoading: true,
+        });
         const scanRequests: TScanRequest = await getScanHistory(
             this.state.currentPage,
         );
@@ -143,9 +149,10 @@ class RequestsList extends Component<TState> {
             // let date;
             // let filteredRequests = [];
             this.setState({
-                currentPage: next - 1,
+                currentPage: next ? next - 1 : this.state.currentPage,
                 requests: data.result,
                 requestsListInfo: data,
+                pageLoading: false,
             });
         }
     };
@@ -388,6 +395,7 @@ class RequestsList extends Component<TState> {
                             nextPage={this.state.requestsListInfo.nextPage}
                             pagesAmount={this.state.requestsListInfo.max}
                             requestsAmount={this.state.requestsListInfo?.total}
+                            pageLoading={this.state.pageLoading}
                             pageChangeFunc={this.onPageChanged}
                             onPreviousPagePress={() =>
                                 this.onPageChanged(this.state.currentPage - 1)

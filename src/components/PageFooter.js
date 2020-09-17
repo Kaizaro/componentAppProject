@@ -1,6 +1,7 @@
 // @flow
 import React, {useState} from 'react';
 import {
+    Alert,
     Modal,
     StyleSheet,
     Text,
@@ -19,6 +20,7 @@ type TProps = {
     nextPage: number,
     pagesAmount: number,
     requestsAmount: number,
+    pageLoading: boolean,
     pageChangeFunc: any,
     onNextPagePress: any,
     onPreviousPagePress: any,
@@ -30,6 +32,7 @@ export const PageFooter = (props: TProps) => {
         nextPage,
         pagesAmount,
         requestsAmount,
+        pageLoading,
         pageChangeFunc,
         onNextPagePress,
         onPreviousPagePress,
@@ -46,8 +49,19 @@ export const PageFooter = (props: TProps) => {
 
     const onConfirmButtonPress = () => {
         console.log(movingPage);
-        pageChangeFunc(movingPage);
-        closeModal();
+        if (
+            parseInt(movingPage, 10) >= 1 &&
+            parseInt(movingPage, 10) <= pagesAmount
+        ) {
+            console.log('successs', parseInt(movingPage, 10));
+            pageChangeFunc(movingPage);
+            closeModal();
+        } else {
+            Alert.alert(
+                'Ошибка',
+                `Выбранная страница вне диапазона. Выберите существующую страницу в диапазоне от 1 - ${pagesAmount}`,
+            );
+        }
     };
 
     const showModal = (): void => {
@@ -103,22 +117,34 @@ export const PageFooter = (props: TProps) => {
     return (
         <View style={styles.container}>
             <Text style={styles.pageFooterText}>
-                Талонов: {10 * currentPage} / {requestsAmount}
+                Талонов:{' '}
+                {currentPage === pagesAmount
+                    ? requestsAmount
+                    : 10 * currentPage}{' '}
+                / {requestsAmount}
             </Text>
-            <View style={styles.pageFooterRow}>
-                <TouchableOpacity onPress={onPreviousPagePress} disabled={currentPage === 1}>
+            <View
+                style={
+                    pageLoading
+                        ? {...styles.pageFooterRow, opacity: 0.5}
+                        : styles.pageFooterRow
+                }>
+                <TouchableOpacity
+                    onPress={onPreviousPagePress}
+                    disabled={currentPage <= 1 || pageLoading}>
                     <Icon
                         name={'arrow-left'}
                         allowFontScaling={true}
                         size={scaleHorizontal(25)}
                         color={
-                            currentPage === 1
+                            currentPage <= 1
                                 ? APP_COLORS.GREY
                                 : APP_COLORS.LIGHT_GREEN
                         }
                     />
                 </TouchableOpacity>
                 <TouchableOpacity
+                    disabled={pageLoading}
                     onPress={showModal}
                     style={styles.pageFooterArrow}>
                     <Text style={styles.pageFooterText}>
@@ -128,14 +154,14 @@ export const PageFooter = (props: TProps) => {
                 </TouchableOpacity>
                 <TouchableOpacity
                     onPress={onNextPagePress}
-                    disabled={currentPage === nextPage}
+                    disabled={currentPage === pagesAmount || pageLoading}
                     style={styles.pageFooterArrow}>
                     <Icon
                         name={'arrow-right'}
                         allowFontScaling={true}
                         size={scaleHorizontal(25)}
                         color={
-                            currentPage === nextPage
+                            currentPage === pagesAmount
                                 ? APP_COLORS.GREY
                                 : APP_COLORS.LIGHT_GREEN
                         }
