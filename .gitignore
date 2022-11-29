@@ -23,17 +23,22 @@ DerivedData
 
 # Android/IntelliJ
 #
-build/
 .idea
 .gradle
 local.properties
 *.iml
+
+# VS Code
+.vscode/
+.editorconfig
 
 # node.js
 #
 node_modules/
 npm-debug.log
 yarn-error.log
+
+package-lock.json
 
 # BUCK
 buck-out/
@@ -54,9 +59,22 @@ buck-out/
 
 # Bundle artifact
 *.jsbundle
+*.hprof
 
 # CocoaPods
 /ios/Pods/
 
-# Android
-.hprof
+# RNConsole Plugin
+/ios/__rnconsoleGen_SAFE_TO_DELETE_Export.plist
+
+# E2E tests reports
+allure-results
+target
+
+# obfuscator
+.jso
+index.android.bundle
+index.android.bundle.map
+index.android.bundle.hbc
+index.android.bundle.hbc.map
+index.android.bundle.packager.map
