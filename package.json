@@ -1,6 +1,6 @@
 {
   "name": "Component Nano",
-  "version": "2.0.2",
+  "version": "1.0.2",
   "private": true,
   "scripts": {
     "android": "react-native run-android",
