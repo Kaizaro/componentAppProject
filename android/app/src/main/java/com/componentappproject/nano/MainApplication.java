@@ -1,4 +1,4 @@
-package com.componentappproject;
+package com.componentappproject.nano;
 
 import androidx.multidex.MultiDexApplication;
 import android.content.Context;
