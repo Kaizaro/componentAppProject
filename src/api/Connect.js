@@ -1,8 +1,7 @@
 import axios from 'axios';
 import store from '../store/configureStore';
 
-// const baseUrl = 'https://komponent-app.ru/api/';
-const baseUrl = 'http://komponent-nano.ru';
+const baseUrl = 'https://komponent-app.ru/api/';
 
 export const authUser = async params => {
     try {
