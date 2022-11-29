@@ -133,7 +133,7 @@ android {
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
         versionCode 1
-        versionName "1.0.2"
+        versionName "1.0.3"
         missingDimensionStrategy 'react-native-camera', 'general'
         multiDexEnabled true
     }
@@ -192,7 +192,7 @@ android {
             if (architecture == null) {
                 architecture = 'UNIVERSAL'
             }
-            outputFileName = "Komponent-${variant.versionName}--${variant.versionCode}-${variant.name}.apk"
+            outputFileName = "Component-${variant.versionName}--${variant.versionCode}-${variant.name}.apk"
         }
     }
 }
